@@ -62,46 +62,67 @@ function redirectToMainPage() {
 }
 
 $("form").submit(function (event) {
-    if ($("input:first").val() === "c") {
-        //$(document).ready(function () {
-        //    var data = [["City 1", "City 2", "City 3"], //headers
-        //        ["New York", "LA", "Seattle"],
-        //        ["Paris", "Milan", "Rome"],
-        //        ["Pittsburg", "Wichita", "Boise"]]
-        //    var cityTable = makeTable($(document.body), data);
-        //    event.preventDefault();
-        //});
-
-        //$.get("/alive", {"choices[]": ["Jon"]}, function (data) {
-        //    $(".result").html(data);
-        //    alert("Load was performed.");
-        //});
-        //);
-        //$.post("/insertElement",
-        //    {item:item.value});
+    var entity = document.getElementById("entity");
+    var selectedEntity = entity.options[entity.selectedIndex].value;
+    var attribute = document.getElementById("attribute");
+    var selectedAttribute = attribute.options[attribute.selectedIndex].value;
+    var textEdit = document.getElementById("in");
+    var searchText = textEdit.value;
+    if (selectedEntity == 1) {
         $.ajax({
-            type: 'POST',
-            // make sure you respect the same origin policy with this url:
-            // http://en.wikipedia.org/wiki/Same_origin_policy
-            url: 'superman',
-            data: {
-                'foo': 'bar',
-                'calibri': 'nolibri'
-            },
-            success: function(msg){
-                alert('wow' + msg);
-            },
-            failure: function(msg){
-                alert(':(');
-            }
-        });
-
-
-    } else {
+            type: "GET",
+            url: "author",
+            //dataType: 'json',
+            data: {attribute: selectedAttribute, value: searchText}
+        })
+            .done(function (msg) {
+                showResponse1(msg);
+            })
+            .fail(function (xhr, status, errorThrown) {
+                alert("Sorry. Server unavailable. ");
+            });
+    }
+    else if (selectedEntity == 2) {
+        $.ajax({
+            type: "GET",
+            url: "pub",
+            //dataType: 'json',
+            data: {attribute: selectedAttribute, value: searchText}
+        })
+            .done(function (msg) {
+                showResponse2(msg);
+            })
+            .fail(function (xhr, status, errorThrown) {
+                alert("Sorry. Server unavailable. ");
+            });
+    }
+    //if ($("input:first").val() === "c") {
+    //    $.ajax({
+    //        type: "GET",
+    //        url: "pub/",
+    //        //dataType: 'json',
+    //        data: {attribute: }
+    //    })
+    //        .done(function (msg) {
+    //            showResponse(msg);
+    //        })
+    //        .fail(function (xhr, status, errorThrown) {
+    //            alert("Sorry. Server unavailable. ");
+    //        });
+    //}
+    else {
         $("p").text("Not valid!").show().fadeOut(1000);
         event.preventDefault();
     }
 });
+
+function showResponse1(resp) {
+    alert(resp);
+}
+
+function showResponse2(resp) {
+    alert(resp);
+}
 
 function makeTable(container, data) {
     var table = $("<table/>").addClass('CSSTableGenerator');

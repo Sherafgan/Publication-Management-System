@@ -65,14 +65,23 @@ public class PMSService {
 
         // get publication on journal (using HTTP get method)
 
-        post("superman", new Route() {
+        get("pub", new Route() {
             @Override
             public Object handle(Request request, Response response) throws Exception {
-                //Object item = request.attribute("z");
-                String calibri = request.queryParams("calibri");
-                return "ok";
+                String attribute = request.queryParams("attribute");
+                String value = request.queryParams("value");
+                return "pub";
             }
         });
+
+        get("author", new Route() {
+                    @Override
+                    public Object handle(Request request, Response response) throws Exception {
+                        String attribute = request.queryParams("attribute");
+                        String value = request.queryParams("value");
+                        return "author";
+                    }
+                });
 
                 get("/publication/:title", new GetSinglePublicationHandler(model));
 
