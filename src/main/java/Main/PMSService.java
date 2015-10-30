@@ -4,6 +4,7 @@ import Main.handlers.*;
 
 import Main.handlers.GetSinglePublicationHandler;
 import com.beust.jcommander.JCommander;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.template.Configuration;
 
@@ -56,17 +57,24 @@ public class PMSService {
 
         Model model = new Sql2oModel(sql2o);
 
-        FreeMarkerEngine freeMarkerEngine = new FreeMarkerEngine();
+        /*FreeMarkerEngine freeMarkerEngine = new FreeMarkerEngine();
         Configuration cfg = new Configuration(Configuration.VERSION_2_3_23);
         cfg.setTemplateLoader(new ClassTemplateLoader(PMSService.class, "/"));
         cfg.setDefaultEncoding("UTF-8");
-        freeMarkerEngine.setConfiguration(cfg);
+        freeMarkerEngine.setConfiguration(cfg);*/
 
         // get publication on journal (using HTTP get method)
 
+        post("superman", new Route() {
+            @Override
+            public Object handle(Request request, Response response) throws Exception {
+                //Object item = request.attribute("z");
+                String calibri = request.queryParams("calibri");
+                return "ok";
+            }
+        });
 
-
-        get("/publication/:title", new GetSinglePublicationHandler(model));
+                get("/publication/:title", new GetSinglePublicationHandler(model));
 
 //        get("/publication/:title", (request, response) -> {
 //            return "Hello: " + request.params(":title");
