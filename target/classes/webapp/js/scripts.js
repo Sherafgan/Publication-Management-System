@@ -62,7 +62,7 @@ function redirectToMainPage() {
 }
 
 $("form").submit(function (event) {
-    if ($("input:first").val() === "correct") {
+    if ($("input:first").val() === "c") {
         //$(document).ready(function () {
         //    var data = [["City 1", "City 2", "City 3"], //headers
         //        ["New York", "LA", "Seattle"],
@@ -72,18 +72,36 @@ $("form").submit(function (event) {
         //    event.preventDefault();
         //});
 
-        $.get("/alive", {"choices[]": ["Jon"]}, function (data) {
-            $(".result").html(data);
-            alert("Load was performed.");
+        //$.get("/alive", {"choices[]": ["Jon"]}, function (data) {
+        //    $(".result").html(data);
+        //    alert("Load was performed.");
+        //});
+        //);
+        //$.post("/insertElement",
+        //    {item:item.value});
+        $.ajax({
+            type: 'POST',
+            // make sure you respect the same origin policy with this url:
+            // http://en.wikipedia.org/wiki/Same_origin_policy
+            url: 'superman',
+            data: {
+                'foo': 'bar',
+                'calibri': 'nolibri'
+            },
+            success: function(msg){
+                alert('wow' + msg);
+            },
+            failure: function(msg){
+                alert(':(');
+            }
         });
+
 
     } else {
         $("p").text("Not valid!").show().fadeOut(1000);
         event.preventDefault();
     }
 });
-
-$.ajax(url, String);
 
 function makeTable(container, data) {
     var table = $("<table/>").addClass('CSSTableGenerator');
