@@ -65,8 +65,8 @@ $("form").submit(function (event) {
         $.ajax({
             type: "POST",
             url: "alive",
-            //dataType: 'json',
-            data: {attribute: selectedAttribute, value: searchText}.serialize()
+            data: {attribute: selectedAttribute, value: searchText},
+            dataType: text
         })
             .done(function (msg) {
                 showResponse1(msg);
