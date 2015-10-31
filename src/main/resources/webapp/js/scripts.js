@@ -127,11 +127,11 @@ function appendTableColumn(table, rowData) {
 //selection dropdown's scripts
 
 function configureDropDownListsForAddForm(ddl1) {
-    var authorsAttributes = ['Name'];
-    var publicationAttributes = ['Title', 'Year', 'Journal', 'Month', 'Publisher', 'ISBN'];
+    var authorsAttributes = ['1'];
+    var publicationAttributes = ['1', '2', '3', '4', '5', '6'];
 
     switch (ddl1.value) {
-        case 'Author':
+        case '1':
             for (i = 0; i < authorsAttributes.length; i++) {
                 makeInputFieldVisible(authorsAttributes[i]);
             }
@@ -139,7 +139,7 @@ function configureDropDownListsForAddForm(ddl1) {
                 makeInputFieldHidden(publicationAttributes[i]);
             }
             break;
-        case 'Publication':
+        case '2':
             for (i = 0; i < publicationAttributes.length; i++) {
                 makeInputFieldVisible(publicationAttributes[i]);
             }
