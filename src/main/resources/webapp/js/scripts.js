@@ -8,12 +8,8 @@ function search() {
 
     var insertedText = document.getElementById("in");
 
-    //alert(selectedEntity + selectedAttribute + " " + insertedText.value);
-
     var div = document.getElementById("images");
     var input = document.getElementById("in");
-
-    //$("#images").text("dsa");
     alert(input.text);
     div.innerHTML = "dasdas";
 }
@@ -31,10 +27,6 @@ function login_by_email() {
     var password = document.getElementById("password").value;
     if (validation()) // Calling validation function
     {
-        //var x = document.getElementsByName('login');
-        //x[0].submit(); //form submission
-        //alert(" Email : " + email + " \n Password : " + password + " \n Form Name : " + document.getElementById("login").getAttribute("email") + "\n\n Form Submitted Successfully......");
-
         redirectToMainPage();
     }
 }
@@ -69,11 +61,10 @@ $("form").submit(function (event) {
     var textEdit = document.getElementById("in");
     var searchText = textEdit.value;
     if (selectedEntity == 1) {
-        alert(selectedEntity);
+
         $.ajax({
             type: "POST",
             url: "alive",
-            //dataType: 'json',
             data: {attribute: selectedAttribute, value: searchText},
             dataType: text
         })
@@ -88,8 +79,7 @@ $("form").submit(function (event) {
         $.ajax({
             type: "POST",
             url: "alive",
-            //dataType: 'json',
-            data: {attribute: selectedAttribute, value: searchText}
+            data: {attribute: selectedAttribute, value: searchText},
             dataType: text
         })
             .done(function (msg) {
@@ -99,20 +89,6 @@ $("form").submit(function (event) {
                 alert("Sorry. Server unavailable. ");
             });
     }
-    //if ($("input:first").val() === "c") {
-    //    $.ajax({
-    //        type: "GET",
-    //        url: "pub/",
-    //        //dataType: 'json',
-    //        data: {attribute: }
-    //    })
-    //        .done(function (msg) {
-    //            showResponse(msg);
-    //        })
-    //        .fail(function (xhr, status, errorThrown) {
-    //            alert("Sorry. Server unavailable. ");
-    //        });
-    //}
     else {
         $("p").text("Not valid!").show().fadeOut(1000);
         event.preventDefault();
@@ -146,4 +122,76 @@ function appendTableColumn(table, rowData) {
     });
 
     return lastRow;
+}
+
+//selection dropdown's scripts
+
+function configureDropDownListsForAddForm(ddl1) {
+    var authorsAttributes = ['1'];
+    var publicationAttributes = ['1', '2', '3', '4', '5', '6'];
+
+    switch (ddl1.value) {
+        case '1':
+            for (i = 0; i < authorsAttributes.length; i++) {
+                makeInputFieldVisible(authorsAttributes[i]);
+            }
+            for (i = 0; i < publicationAttributes.length; i++) {
+                makeInputFieldHidden(publicationAttributes[i]);
+            }
+            break;
+        case '2':
+            for (i = 0; i < publicationAttributes.length; i++) {
+                makeInputFieldVisible(publicationAttributes[i]);
+            }
+            for (i = 0; i < authorsAttributes.length; i++) {
+                makeInputFieldHidden(authorsAttributes[i]);
+            }
+            break;
+        default:
+            //ddl2.options.length = 0;
+            break;
+    }
+
+}
+
+function makeInputFieldVisible(text) {
+    var input = document.getElementById(text);
+    input.type = "text";
+    input.placeholder = text;
+}
+
+function makeInputFieldHidden(text) {
+    var input = document.getElementById(text);
+    input.type = "hidden";
+}
+
+function configureDropDownLists(ddl1, ddl2) {
+    var authorsAttributes = ['Name'];
+    var publicationAttributes = ['Title', 'Year', 'Journal', 'Month', 'Publisher', 'ISBN'];
+
+    switch (ddl1.value) {
+        case 'Author':
+            ddl2.options.length = 0;
+            for (i = 0; i < authorsAttributes.length; i++) {
+                createInputField(ddl2, authorsAttributes[i], authorsAttributes[i]);
+            }
+            break;
+        case 'Publication':
+            ddl2.options.length = 0;
+            for (i = 0; i < publicationAttributes.length; i++) {
+                createInputField(ddl2, publicationAttributes[i], publicationAttributes[i]);
+            }
+            break;
+        default:
+            ddl2.options.length = 0;
+            break;
+    }
+
+}
+
+function createInputField(ddl, text, value) {
+    var opt = document.createElement('option');
+    opt.value = value;
+    opt.text = text;
+    ddl.options.add(opt);
 }
