@@ -64,7 +64,7 @@ $("form").submit(function (event) {
 
         $.ajax({
             type: "POST",
-            url: "author/",
+            url: "alive",
             //dataType: 'json',
             data: {attribute: selectedAttribute, value: searchText}.serialize()
         })
@@ -78,9 +78,9 @@ $("form").submit(function (event) {
     else if (selectedEntity == 2) {
         $.ajax({
             type: "POST",
-            url: "pub",
-            //dataType: 'json',
-            data: {attribute: selectedAttribute, value: searchText}
+            url: "alive",
+            data: {attribute: selectedAttribute, value: searchText},
+            dataType: text
         })
             .done(function (msg) {
                 showResponse2(msg);
