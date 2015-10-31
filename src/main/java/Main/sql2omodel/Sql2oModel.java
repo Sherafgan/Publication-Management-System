@@ -96,10 +96,9 @@ public class Sql2oModel implements Model {
     }*/
 
     @Override
-    public Optional<Publication> getPublicationOn(String title) {
+    public Optional<Publication> getPublicationsOn(String title) {
         try (Connection conn = sql2o.open()) {
-            List<Publication> posts = conn.createQuery("select * from publication where post_uuid=:post_uuid")
-                    .addParameter("title", title)
+            List<Publication> posts = conn.createQuery("select title from publication limit 5")
                     .executeAndFetch(Publication.class);
             if (posts.size() == 0) {
                 return Optional.empty();

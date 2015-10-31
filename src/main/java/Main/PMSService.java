@@ -65,37 +65,47 @@ public class PMSService {
 
         // get publication on journal (using HTTP get method)
 
-        get("pub", new Route() {
+        post("entity/:atr/:numb/:srch",new GetSinglePublicationHandler(model));
+
+//        post("pub", new Route() {
+//            @Override
+//            public Object handle(Request request, Response response) throws Exception {
+//                String attribute = request.queryParams("attribute");
+//                String value = request.queryParams("value");
+//                new GetSinglePublicationHandler(model,attribute,value);
+//                return "pub";
+//            }
+//        });
+
+        post("/author", new Route() {
             @Override
             public Object handle(Request request, Response response) throws Exception {
                 String attribute = request.queryParams("attribute");
                 String value = request.queryParams("value");
-                return "pub";
+                return "author";
             }
         });
 
-        get("author", new Route() {
-                    @Override
-                    public Object handle(Request request, Response response) throws Exception {
-                        String attribute = request.queryParams("attribute");
-                        String value = request.queryParams("value");
-                        return "author";
-                    }
-                });
-
-                get("/publication/:title", new GetSinglePublicationHandler(model));
+                //get("/publication/:title", new GetSinglePublicationHandler(model));
 
 //        get("/publication/:title", (request, response) -> {
 //            return "Hello: " + request.params(":title");
 //        });
 
 
-        get("/publ/:type/:number", (req, res) -> {
+        get("/mainIndex.html/alive", (req, res) -> {
             try {
-                Integer type = Integer.parseInt(req.params(":type"));
-                int number = Integer.parseInt(req.params(":number"));
-                return "You requested a publication by " + type + " and number="
-                        + number;
+                int entity = Integer.parseInt(req.queryParams("entity"));
+                int atr = Integer.parseInt(req.queryParams("atr"));
+                String search = req.queryParams("search");
+                if (entity == 1) {
+
+                }
+                else if (entity == 2) {
+
+                }
+                return "You requested a publication by " + entity + " and number="
+                        + atr;
             } catch (Exception e) {
                 halt(502, "Error, check your parameters!");
                 return "";

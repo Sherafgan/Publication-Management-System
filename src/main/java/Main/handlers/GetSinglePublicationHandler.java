@@ -3,19 +3,18 @@ package Main.handlers;
 import Main.Answer;
 import Main.Model.Model;
 import Main.Model.Publication;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.*;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Created by nikitaborodulin on 30/10/15.
@@ -23,6 +22,8 @@ import java.util.UUID;
 public class GetSinglePublicationHandler implements Route {
 
     protected Model model;
+    protected String attribute;
+    protected String value;
 
     public GetSinglePublicationHandler(Model model) {
         this.model = model;
@@ -40,7 +41,7 @@ public class GetSinglePublicationHandler implements Route {
             return new Answer(404);
         }
 
-        Optional<Publication> publ = model.getPublicationOn(string);
+        Optional<Publication> publ = model.getPublicationsOn(string);
         if (!publ.isPresent()) {
             return new Answer(404);
         }
@@ -66,7 +67,9 @@ public class GetSinglePublicationHandler implements Route {
     public Object handle(Request request, Response response) throws Exception {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
+            //Map<String, String> map = new HashMap<String, String>();
             Map<String, String> urlParams = request.params();
+            //Map<String, String> urlParams = Collections.unmodifiableMap(map);
             Answer answer = process(urlParams);
             response.status(answer.getCode());
             response.type("application/json");
