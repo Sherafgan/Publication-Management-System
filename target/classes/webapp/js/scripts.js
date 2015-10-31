@@ -5,36 +5,16 @@ function search() {
     var selectedEntity = entity.options[entity.selectedIndex].value;
     var attribute = document.getElementById("attribute");
     var selectedAttribute = attribute.options[attribute.selectedIndex].value;
-
     var insertedText = document.getElementById("in");
-
-    //alert(selectedEntity + selectedAttribute + " " + insertedText.value);
-
     var div = document.getElementById("images");
     var input = document.getElementById("in");
-
-    //$("#images").text("dsa");
-    alert(input.text);
-    div.innerHTML = "dasdas";
 }
-
-function handleInput() {
-    alert("Handled");
-    var div = document.getElementById("images");
-
-    div.innerHTML = div.innerHTML + 'Extra Stuff';
-}
-
 
 function login_by_email() {
     var email = document.getElementById("email").value;
     var password = document.getElementById("password").value;
     if (validation()) // Calling validation function
     {
-        //var x = document.getElementsByName('login');
-        //x[0].submit(); //form submission
-        //alert(" Email : " + email + " \n Password : " + password + " \n Form Name : " + document.getElementById("login").getAttribute("email") + "\n\n Form Submitted Successfully......");
-
         redirectToMainPage();
     }
 }
@@ -85,11 +65,12 @@ $("form").submit(function (event) {
             });
     }
     else if (selectedEntity == 2) {
+        alert(selectedEntity);
         $.ajax({
             type: "POST",
             url: "alive",
             //dataType: 'json',
-            data: {attribute: selectedAttribute, value: searchText}
+            data: {attribute: selectedAttribute, value: searchText},
             dataType: text
         })
             .done(function (msg) {
@@ -146,4 +127,79 @@ function appendTableColumn(table, rowData) {
     });
 
     return lastRow;
+}
+
+//selection dropdown's scripts
+
+function configureDropDownListsForAddForm(ddl1) {
+    var authorsAttributes = ['1'];
+    var publicationAttributes = ['2', '3', '4', '5', '6', '7'];
+
+    var authorPlaceHolders = ['Name'];
+    var publicationPlaceHolders = ['Title', 'Year', 'Journal', 'Month', 'Publisher', 'ISBN'];
+
+    switch (ddl1.value) {
+        case '1':
+            for (i = 0; i < authorsAttributes.length; i++) {
+                makeInputFieldVisible(authorsAttributes[i], authorPlaceHolders[i]);
+            }
+            for (i = 0; i < publicationAttributes.length; i++) {
+                makeInputFieldHidden(publicationAttributes[i]);
+            }
+            break;
+        case '2':
+            for (i = 0; i < publicationAttributes.length; i++) {
+                makeInputFieldVisible(publicationAttributes[i], publicationPlaceHolders[i]);
+            }
+            for (i = 0; i < authorsAttributes.length; i++) {
+                makeInputFieldHidden(authorsAttributes[i]);
+            }
+            break;
+        default:
+            //ddl2.options.length = 0;
+            break;
+    }
+
+}
+
+function makeInputFieldVisible(text, placeHolderText) {
+    var input = document.getElementById(text);
+    input.type = "text";
+    input.placeholder = placeHolderText;
+}
+
+function makeInputFieldHidden(text) {
+    var input = document.getElementById(text);
+    input.type = "hidden";
+}
+
+function configureDropDownLists(ddl1, ddl2) {
+    var authorsAttributes = ['Name'];
+    var publicationAttributes = ['Title', 'Year', 'Journal', 'Month', 'Publisher', 'ISBN'];
+
+    switch (ddl1.value) {
+        case '1':
+            ddl2.options.length = 0;
+            for (i = 0; i < authorsAttributes.length; i++) {
+                createInputField(ddl2, authorsAttributes[i], authorsAttributes[i]);
+            }
+            break;
+        case '2':
+            ddl2.options.length = 0;
+            for (i = 0; i < publicationAttributes.length; i++) {
+                createInputField(ddl2, publicationAttributes[i], publicationAttributes[i]);
+            }
+            break;
+        default:
+            ddl2.options.length = 0;
+            break;
+    }
+
+}
+
+function createInputField(ddl, text, value) {
+    var opt = document.createElement('option');
+    opt.value = value;
+    opt.text = text;
+    ddl.options.add(opt);
 }

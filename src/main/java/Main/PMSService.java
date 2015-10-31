@@ -41,7 +41,7 @@ public class PMSService {
                 options.dbUsername, options.dbPassword, new PostgresQuirks() {
             {
                 // make sure we use default UUID converter.
-                converters.put(Integer.class, new UUIDConverter());
+                //converters.put(Integer.class, new UUIDConverter());
             }
         });
 

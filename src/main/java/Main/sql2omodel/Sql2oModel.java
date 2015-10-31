@@ -95,12 +95,57 @@ public class Sql2oModel implements Model {
 
     @Override
     public List<Publication> getPublicationsOn(String attribute, String value) {
-        int attr = Integer.parseInt(attribute);
-        if (attr == 0) {
+        String sql;
+        switch (attribute) {
+            case "Title":
+                sql = "SELECT pub_id, title, year, url " +
+                        "FROM publication " +
+                        "WHERE title = :target " +
+                        "limit 10";
 
+                break;
+            case "Year":
+                sql = "SELECT pub_id, title, year, url " +
+                        "FROM  publication " +
+                        "WHERE year = :target " +
+                        "limit 10";
+
+                break;
+            case "Journal":
+                sql = "SELECT pub_id, title, year, url " +
+                        "FROM  publication " +
+                        "WHERE journal = :target " +
+                        "limit 10";
+
+                break;
+            case "Month":
+                sql = "SELECT pub_id, title, year, url " +
+                        "FROM  publication " +
+                        "WHERE month = :target " +
+                        "limit 10";
+
+                break;
+            case "Publisher":
+                sql = "SELECT pub_id, title, year, url " +
+                        "FROM  publication " +
+                        "WHERE publisher = :target " +
+                        "limit 10";
+
+                break;
+            case "ISBN":
+                sql = "SELECT pub_id, title, year, url " +
+                        "FROM  publication " +
+                        "WHERE ISBN = :target " +
+                        "limit 10";
+
+                break;
+            default:
+                sql = "null";
+                break;
         }
         try (Connection conn = sql2o.open()) {
-            List<Publication> publications = conn.createQuery("select title from publication limit 5")
+            List<Publication> publications = conn.createQuery(sql)
+                    .addParameter("target",value)
                     .executeAndFetch(Publication.class);
             return publications;
         }

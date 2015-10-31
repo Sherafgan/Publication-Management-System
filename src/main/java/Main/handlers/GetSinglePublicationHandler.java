@@ -76,7 +76,7 @@ public class GetSinglePublicationHandler implements Route {
             String atr = request.queryParams("atr");
             String search = request.queryParams("search");
             //Map<String, String> urlParams = request.params();
-            Map<String, String> map = new HashMap<String, String>();
+            Map<String, String> map = new HashMap<>();
             map.put("entity",entity);
             map.put("atr",atr);
             map.put("search",search);

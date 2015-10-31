@@ -5,22 +5,10 @@ function search() {
     var selectedEntity = entity.options[entity.selectedIndex].value;
     var attribute = document.getElementById("attribute");
     var selectedAttribute = attribute.options[attribute.selectedIndex].value;
-
     var insertedText = document.getElementById("in");
-
     var div = document.getElementById("images");
     var input = document.getElementById("in");
-    alert(input.text);
-    div.innerHTML = "dasdas";
 }
-
-function handleInput() {
-    alert("Handled");
-    var div = document.getElementById("images");
-
-    div.innerHTML = div.innerHTML + 'Extra Stuff';
-}
-
 
 function login_by_email() {
     var email = document.getElementById("email").value;
@@ -61,10 +49,11 @@ $("form").submit(function (event) {
     var textEdit = document.getElementById("in");
     var searchText = textEdit.value;
     if (selectedEntity == 1) {
-
+        alert(selectedEntity);
         $.ajax({
             type: "POST",
             url: "alive",
+            //dataType: 'json',
             data: {attribute: selectedAttribute, value: searchText},
             dataType: text
         })
@@ -76,9 +65,11 @@ $("form").submit(function (event) {
             });
     }
     else if (selectedEntity == 2) {
+        alert(selectedEntity);
         $.ajax({
             type: "POST",
             url: "alive",
+            //dataType: 'json',
             data: {attribute: selectedAttribute, value: searchText},
             dataType: text
         })
@@ -89,6 +80,20 @@ $("form").submit(function (event) {
                 alert("Sorry. Server unavailable. ");
             });
     }
+    //if ($("input:first").val() === "c") {
+    //    $.ajax({
+    //        type: "GET",
+    //        url: "pub/",
+    //        //dataType: 'json',
+    //        data: {attribute: }
+    //    })
+    //        .done(function (msg) {
+    //            showResponse(msg);
+    //        })
+    //        .fail(function (xhr, status, errorThrown) {
+    //            alert("Sorry. Server unavailable. ");
+    //        });
+    //}
     else {
         $("p").text("Not valid!").show().fadeOut(1000);
         event.preventDefault();
@@ -128,12 +133,15 @@ function appendTableColumn(table, rowData) {
 
 function configureDropDownListsForAddForm(ddl1) {
     var authorsAttributes = ['1'];
-    var publicationAttributes = ['1', '2', '3', '4', '5', '6'];
+    var publicationAttributes = ['2', '3', '4', '5', '6', '7'];
+
+    var authorPlaceHolders = ['Name'];
+    var publicationPlaceHolders = ['Title', 'Year', 'Journal', 'Month', 'Publisher', 'ISBN'];
 
     switch (ddl1.value) {
         case '1':
             for (i = 0; i < authorsAttributes.length; i++) {
-                makeInputFieldVisible(authorsAttributes[i]);
+                makeInputFieldVisible(authorsAttributes[i], authorPlaceHolders[i]);
             }
             for (i = 0; i < publicationAttributes.length; i++) {
                 makeInputFieldHidden(publicationAttributes[i]);
@@ -141,7 +149,7 @@ function configureDropDownListsForAddForm(ddl1) {
             break;
         case '2':
             for (i = 0; i < publicationAttributes.length; i++) {
-                makeInputFieldVisible(publicationAttributes[i]);
+                makeInputFieldVisible(publicationAttributes[i], publicationPlaceHolders[i]);
             }
             for (i = 0; i < authorsAttributes.length; i++) {
                 makeInputFieldHidden(authorsAttributes[i]);
@@ -154,10 +162,10 @@ function configureDropDownListsForAddForm(ddl1) {
 
 }
 
-function makeInputFieldVisible(text) {
+function makeInputFieldVisible(text, placeHolderText) {
     var input = document.getElementById(text);
     input.type = "text";
-    input.placeholder = text;
+    input.placeholder = placeHolderText;
 }
 
 function makeInputFieldHidden(text) {
@@ -170,13 +178,13 @@ function configureDropDownLists(ddl1, ddl2) {
     var publicationAttributes = ['Title', 'Year', 'Journal', 'Month', 'Publisher', 'ISBN'];
 
     switch (ddl1.value) {
-        case 'Author':
+        case '1':
             ddl2.options.length = 0;
             for (i = 0; i < authorsAttributes.length; i++) {
                 createInputField(ddl2, authorsAttributes[i], authorsAttributes[i]);
             }
             break;
-        case 'Publication':
+        case '2':
             ddl2.options.length = 0;
             for (i = 0; i < publicationAttributes.length; i++) {
                 createInputField(ddl2, publicationAttributes[i], publicationAttributes[i]);

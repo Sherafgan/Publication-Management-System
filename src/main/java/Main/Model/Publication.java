@@ -9,9 +9,8 @@ import java.util.UUID;
 
 @Data
 public class Publication {
-    private UUID pub_uuid;
+    private int pub_id;
     private String title;
-    private Integer year;
-    private URL URL;
-    private List<String> categories;
+    private String year;
+    private String url;
 }

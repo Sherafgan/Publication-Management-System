@@ -13,7 +13,7 @@
     <meta name="author" content="LayoutIt!">
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <!--<link href="css/style.css" rel="stylesheet">-->
+    <link href="css/style.css" rel="stylesheet">
 
 </head>
 <body>
@@ -38,9 +38,7 @@
                     </ul>
                     <form class="navbar-form navbar-left" method="get" action="/mainIndex.html/alive">
                         <span class="custom-dropdown">
-                            <select id="entity" name="entity" class="custom-dropdown"
-                                    onchange="configureDropDownLists(this,document.getElementById('ddl2'))">
-                                <!--<option value=""></option>-->
+                            <select id="entity" name="entity" class="custom-dropdown" onchange="configureDropDownLists(this,document.getElementById('attribute'))">
                                 <option value="1">Author</option>
                                 <option value="2">Publication</option>
                             </select>
@@ -60,10 +58,7 @@
                     </form>
 
                     <div class="controlPanel">
-                        <!--<button type="button" class="btn btn-success">Add</button> //original-->
-                        <button type="button" class="btn btn-success" data-toggle="modal"
-                                data-target="#myModal">Add
-                        </button>
+                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Add</button>
                         <button type="button" class="btn btn-danger">Delete</button>
                     </div>
                 </div>
@@ -76,39 +71,36 @@
         <div class="col-md-12">
             <p id="dataIn" class="CSSTableGenerator"></p>
         </div>
-
-        <!-- Modal -->
+        <!— Modal —>
         <div class="modal fade" id="myModal" role="dialog">
             <div class="modal-dialog">
-                <!-- Modal content-->
+                <!— Modal content-->
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                         <h4 class="modal-title">Add</h4>
                     </div>
                     <div class="modal-body">
-                        <!-- HERE TO ADD MAIN FORM-->
-                        <select id="ddl" onchange="configureDropDownListsForAddForm(this)">
-                            <option value=""></option>
-                            <option value="Author">Author</option>
-                            <option value="Publication">Publication</option>
+                        <!— HERE TO ADD MAIN FORM-->
+                        <select id="modalEntity" onchange="configureDropDownListsForAddForm(this)">
+                            <option value="1">Author</option>
+                            <option value="2">Publication</option>
                         </select>
                         <!--<select id="ddl2"></select>-->
                         <br/>
-                        <input id="Name" type="hidden" placeholder=""><br/>
-                        <input id="Title" type="hidden" placeholder=""><br/>
-                        <input id="Year" type="hidden" placeholder=""><br/>
-                        <input id="Journal" type="hidden" placeholder=""><br/>
-                        <input id="Month" type="hidden" placeholder=""><br/>
-                        <input id="Publisher" type="hidden" placeholder=""><br/>
-                        <input id="ISBN" type="hidden" placeholder=""><br/>
+                        <input id="1" type="text" placeholder="Name"><br/>
+                        <input id="2" type="hidden" placeholder=""><br/>
+                        <input id="3" type="hidden" placeholder=""><br/>
+                        <input id="4" type="hidden" placeholder=""><br/>
+                        <input id="5" type="hidden" placeholder=""><br/>
+                        <input id="6" type="hidden" placeholder=""><br/>
+                        <input id="7" type="hidden" placeholder=""><br/>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Add
                         </button>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
