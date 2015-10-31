@@ -69,12 +69,13 @@ $("form").submit(function (event) {
     var textEdit = document.getElementById("in");
     var searchText = textEdit.value;
     if (selectedEntity == 1) {
-
+        alert(selectedEntity);
         $.ajax({
             type: "POST",
-            url: "author/",
+            url: "alive",
             //dataType: 'json',
-            data: {attribute: selectedAttribute, value: searchText}.serialize()
+            data: {attribute: selectedAttribute, value: searchText},
+            dataType: text
         })
             .done(function (msg) {
                 showResponse1(msg);
@@ -86,9 +87,10 @@ $("form").submit(function (event) {
     else if (selectedEntity == 2) {
         $.ajax({
             type: "POST",
-            url: "pub",
+            url: "alive",
             //dataType: 'json',
             data: {attribute: selectedAttribute, value: searchText}
+            dataType: text
         })
             .done(function (msg) {
                 showResponse2(msg);

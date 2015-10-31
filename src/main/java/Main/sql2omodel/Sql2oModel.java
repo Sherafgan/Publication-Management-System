@@ -3,16 +3,14 @@ package Main.sql2omodel;
 
 //import me.tomassetti.RandomUuidGenerator;
 //import me.tomassetti.UuidGenerator;
+
 import Main.Model.Model;
 import Main.Model.Participant;
 import Main.Model.Publication;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 public class Sql2oModel implements Model {
 
@@ -76,14 +74,14 @@ public class Sql2oModel implements Model {
                 .executeAndFetch(String.class);
     }*/
 
-    @Override
-    public List<Participant> getAllParticipantsOn(String name) {
-        try (Connection conn = sql2o.open()) {
-            return conn.createQuery("select * from comments where post_uuid=:post_uuid")
-                    .addParameter("name", name)
-                    .executeAndFetch(Participant.class);
-        }
-    }
+//    @Override
+//    public List<Participant> getAllParticipantsOn(String name) {
+//        try (Connection conn = sql2o.open()) {
+//            return conn.createQuery("select * from comments where post_uuid=:post_uuid")
+//                    .addParameter("name", name)
+//                    .executeAndFetch(Participant.class);
+//        }
+//    }
 
     /*@Override
     public boolean existPost(UUID post) {
@@ -96,19 +94,36 @@ public class Sql2oModel implements Model {
     }*/
 
     @Override
-    public Optional<Publication> getPublicationsOn(String title) {
+    public List<Publication> getPublicationsOn(String attribute, String value) {
+        int attr = Integer.parseInt(attribute);
+        if (attr == 0) {
+
+        }
         try (Connection conn = sql2o.open()) {
-            List<Publication> posts = conn.createQuery("select title from publication limit 5")
+            List<Publication> publications = conn.createQuery("select title from publication limit 5")
                     .executeAndFetch(Publication.class);
-            if (posts.size() == 0) {
-                return Optional.empty();
-            } else if (posts.size() == 1) {
-                return Optional.of(posts.get(0));
-            } else {
-                throw new RuntimeException();
-            }
+            return publications;
         }
     }
+
+    @Override
+    public List<Participant> getParticipantsOn(String attribute, String value) {
+        String sql =
+                "SELECT name, homepage " +
+                        "FROM participant " +
+                        "WHERE name = :targetName " +
+                        "limit 10";
+        try (Connection conn = sql2o.open()) {
+            if (attribute.equals("1")) {
+                List<Participant> participants = conn.createQuery(sql)
+                        .addParameter("targetName",value)
+                        .executeAndFetch(Participant.class);
+                return participants;
+            } else
+                return null;
+        }
+    }
+}
 
     /*@Override
     public void updatePost(Post post) {
@@ -129,5 +144,3 @@ public class Sql2oModel implements Model {
                     .executeUpdate();
         }
     }*/
-
-}

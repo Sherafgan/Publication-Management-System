@@ -1,26 +1,16 @@
 package Main;
 
-import Main.handlers.*;
-
-import Main.handlers.GetSinglePublicationHandler;
-import com.beust.jcommander.JCommander;
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import freemarker.cache.ClassTemplateLoader;
-import freemarker.template.Configuration;
-
 import Main.Model.Model;
+import Main.handlers.GetSinglePublicationHandler;
 import Main.sql2omodel.Sql2oModel;
+import com.beust.jcommander.JCommander;
 import org.sql2o.Sql2o;
 import org.sql2o.converters.UUIDConverter;
 import org.sql2o.quirks.PostgresQuirks;
 import spark.Request;
 import spark.Response;
 import spark.Route;
-import static spark.Spark.staticFileLocation;
-
 import spark.Spark;
-import spark.template.freemarker.FreeMarkerEngine;
-
 
 import java.util.logging.Logger;
 
@@ -65,7 +55,7 @@ public class PMSService {
 
         // get publication on journal (using HTTP get method)
 
-        post("entity/:atr/:numb/:srch",new GetSinglePublicationHandler(model));
+       // get("entity/:atr/:numb/:srch", new GetSinglePublicationHandler(model));
 
 //        post("pub", new Route() {
 //            @Override
@@ -86,31 +76,33 @@ public class PMSService {
             }
         });
 
-                //get("/publication/:title", new GetSinglePublicationHandler(model));
+        //get("/publication/:title", new GetSinglePublicationHandler(model));
 
 //        get("/publication/:title", (request, response) -> {
 //            return "Hello: " + request.params(":title");
 //        });
 
 
-        get("/mainIndex.html/alive", (req, res) -> {
-            try {
-                int entity = Integer.parseInt(req.queryParams("entity"));
-                int atr = Integer.parseInt(req.queryParams("atr"));
-                String search = req.queryParams("search");
-                if (entity == 1) {
+//        get("/mainIndex.html/alive", (req, res) -> {
+//            try {
+//                int entity = Integer.parseInt(req.queryParams("entity"));
+//                int atr = Integer.parseInt(req.queryParams("atr"));
+//                String search = req.queryParams("search");
+//                if (entity == 1)  { // author
+//
+//                }
+//                else if (entity == 2) { // publication
+//
+//                }
+//                return "You requested a publication by " + entity + " and number="
+//                        + atr;
+//            } catch (Exception e) {
+//                halt(502, "Error, check your parameters!");
+//                return "";
+//            }
+//        });
 
-                }
-                else if (entity == 2) {
-
-                }
-                return "You requested a publication by " + entity + " and number="
-                        + atr;
-            } catch (Exception e) {
-                halt(502, "Error, check your parameters!");
-                return "";
-            }
-        });
+        get("/mainIndex.html/alive", new GetSinglePublicationHandler(model));
 
         get("/alive", new Route() {
             @Override

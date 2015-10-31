@@ -2,6 +2,7 @@ package Main.handlers;
 
 import Main.Answer;
 import Main.Model.Model;
+import Main.Model.Participant;
 import Main.Model.Publication;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -11,10 +12,7 @@ import spark.Route;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Created by nikitaborodulin on 30/10/15.
@@ -22,30 +20,36 @@ import java.util.Optional;
 public class GetSinglePublicationHandler implements Route {
 
     protected Model model;
-    protected String attribute;
-    protected String value;
+
 
     public GetSinglePublicationHandler(Model model) {
         this.model = model;
     }
 
     protected Answer processImpl(Map<String, String> urlParams) {
-        if (!urlParams.containsKey(":title")) {
-            throw new IllegalArgumentException();
-        }
-        String string;
+//        if (!urlParams.containsKey(":title")) {
+//            throw new IllegalArgumentException();
+//        }
+        String value, entity, attribute;
+
         try {
             //st = UUID.fromString(urlParams.get(":journal"));
-            string = urlParams.get((":title"));
+            entity = urlParams.get("entity");
+            attribute = urlParams.get("atr");
+            value = urlParams.get("search");
         } catch (IllegalArgumentException e) {
             return new Answer(404);
         }
-
-        Optional<Publication> publ = model.getPublicationsOn(string);
-        if (!publ.isPresent()) {
-            return new Answer(404);
+        switch (entity) {
+            case "1":
+                List<Participant> authors = model.getParticipantsOn(attribute, value);
+                return Answer.ok(dataToJson(authors));
+            case "2":
+                List<Publication> publications = model.getPublicationsOn(attribute, value);
+                return Answer.ok(dataToJson(publications));
+            default:
+                return new Answer(404);
         }
-        return Answer.ok(dataToJson(publ.get()));
     }
 
     public final Answer process(Map<String, String> urlParams) {
@@ -68,8 +72,15 @@ public class GetSinglePublicationHandler implements Route {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             //Map<String, String> map = new HashMap<String, String>();
-            Map<String, String> urlParams = request.params();
-            //Map<String, String> urlParams = Collections.unmodifiableMap(map);
+            String entity = request.queryParams("entity");
+            String atr = request.queryParams("atr");
+            String search = request.queryParams("search");
+            //Map<String, String> urlParams = request.params();
+            Map<String, String> map = new HashMap<String, String>();
+            map.put("entity",entity);
+            map.put("atr",atr);
+            map.put("search",search);
+            Map<String, String> urlParams = Collections.unmodifiableMap(map);
             Answer answer = process(urlParams);
             response.status(answer.getCode());
             response.type("application/json");

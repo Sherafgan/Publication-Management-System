@@ -8,8 +8,8 @@ public interface Model {
     //UUID createPost(String title, String content, List<String> categories);
     //UUID createComment(UUID post, String author, String content);
     //List<Publication> getAllPublications();
-    Optional<Publication> getPublicationsOn(String title);
-    List<Participant> getAllParticipantsOn(String name);
+    List<Publication> getPublicationsOn(String attribute, String value);
+    List<Participant> getParticipantsOn(String attribute, String value);
     //boolean existPost(UUID post);
 
     //Optional<Post> getPost(UUID uuid);
