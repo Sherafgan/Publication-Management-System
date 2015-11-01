@@ -41,6 +41,59 @@ function redirectToMainPage() {
     window.location = "mainIndex.html";
 }
 
+$('#btnOK').click(function ()  {
+    var entity = document.getElementById("modalEntity");
+    var selectedEntity = entity.options[entity.selectedIndex].value;
+    if (selectedEntity == 1) {
+        var nameInput = document.getElementById("1");
+        var name = nameInput.value;
+        $.ajax({
+            type: "GET",
+            url: "survive",
+            dataType: 'json',
+            data: {entity: entity.value, name: name}
+        })
+            .done(function (msg) {
+                alert( "Data Loaded: " + data );
+            })
+            .fail(function (xhr, status, errorThrown) {
+                alert("Sorry. Data wasn't loaded ");
+            });
+    }
+    else if (selectedEntity == 2) {
+        var titleInput = document.getElementById("2");
+        var title = titleInput.value;
+        //alert(title);
+        var yearInput = document.getElementById("3");
+        var year = yearInput.value;
+        //alert(year);
+        var journalInput = document.getElementById("4");
+        var journal = journalInput.value;
+        //alert(journal);
+        var monthInput = document.getElementById("5");
+        var month = monthInput.value;
+        //alert(month);
+        var publisherInput = document.getElementById("6");
+        var publisher = publisherInput.value;
+        //alert(publisher);
+        var isbnInput = document.getElementById("7");
+        var isbn = isbnInput.value;
+        //alert(isbn);
+        $.ajax({
+            type: "GET",
+            url: "survive",
+            dataType: 'json',
+            data: {entity: entity.value, title: title, year: year, journal: journal, month: month, publisher: publisher, isbn: isbn}
+        })
+            .done(function (msg) {
+                alert( "Data Loaded: " + data );
+            })
+            .fail(function (xhr, status, errorThrown) {
+                alert("Sorry. Data wasn't loaded ");
+            });
+    }
+});
+
 
 $("#submitbtn").click(function () {
     var entity = document.getElementById("entity");
@@ -60,7 +113,7 @@ $("#submitbtn").click(function () {
 
         })
             .done(function (msg) {
-                $.jsontotable(msg, {id: '#jsontotable', header: true});
+                $.jsontotable(msg, {id: '#jsontotable', header: false});
             })
             .fail(function (xhr, status, errorThrown) {
                 alert("Sorry. Server unavailable. ");

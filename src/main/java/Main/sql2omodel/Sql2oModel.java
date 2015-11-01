@@ -24,6 +24,31 @@ public class Sql2oModel implements Model {
         //uuidGenerator = new RandomUuidGenerator();
     }
 
+    public void addition(String entity, ArrayList<String> values) {
+        String sql;
+        String name = values.get(0);
+        if (entity.equals("1")) {
+            sql = "INSERT INTO author (name) VALUES (':name');";
+            try (Connection conn = sql2o.open()) {
+                conn.createQuery(sql)
+                        .addParameter("name", name)
+                        .executeUpdate();
+            }
+        } else {
+            sql = "INSERT INTO publication VALUES (':title',':year',':journal',':month',':publisher',':ISBN')";
+            try (Connection conn = sql2o.open()) {
+                conn.createQuery(sql)
+                        .addParameter("title", values.get(0))
+                        .addParameter("year", values.get(0))
+                        .addParameter("journal", values.get(0))
+                        .addParameter("month", values.get(0))
+                        .addParameter("publisher", values.get(0))
+                        .addParameter("ISBN", values.get(0))
+                        .executeUpdate();
+            }
+        }
+    }
+
     public List<Publication> getBooksOn(String attribute, String value) {
         String sql;
         if (attribute.equals("Publisher")) {

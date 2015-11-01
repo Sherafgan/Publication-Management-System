@@ -2,6 +2,7 @@ package Main;
 
 import Main.Model.Model;
 import Main.handlers.Handler;
+import Main.handlers.additionHandler;
 import Main.sql2omodel.Sql2oModel;
 import com.beust.jcommander.JCommander;
 import org.sql2o.Sql2o;
@@ -59,6 +60,8 @@ public class PMSService {
 
 
         get("/alive", new Handler(model));
+
+        get("/survive", new additionHandler(model));
 
     }
 }
