@@ -4,6 +4,9 @@ import Main.Model.Model;
 import Main.handlers.GetSinglePublicationHandler;
 import Main.sql2omodel.Sql2oModel;
 import com.beust.jcommander.JCommander;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.util.JSONWrappedObject;
 import org.sql2o.Sql2o;
 import org.sql2o.converters.UUIDConverter;
 import org.sql2o.quirks.PostgresQuirks;
@@ -67,6 +70,12 @@ public class PMSService {
 //            }
 //        });
 
+        after((req, res) -> {
+            res.type("application/json");
+        });
+
+//        get("/users", (req, res) -> userService.getAllUsers(), json());
+
         post("/author", new Route() {
             @Override
             public Object handle(Request request, Response response) throws Exception {
@@ -75,6 +84,26 @@ public class PMSService {
                 return "author";
             }
         });
+
+//        get("/data.json", new Route() {
+//            @Override
+//            public Object handle(Request request, Response response) throws Exception {
+//                final JsonNodeFactory nodeFactory = JsonNodeFactory.instance;
+//
+//                ObjectNode node = nodeFactory.objectNode();
+//
+//                ObjectNode child = nodeFactory.objectNode(); // the child
+//
+//                child.put("message", "test");
+//
+//// etc etc
+//
+//// and then:
+//
+//                node.put("notification", child);
+//                return null;
+//            }
+//        })
 
         //get("/publication/:title", new GetSinglePublicationHandler(model));
 
@@ -102,7 +131,7 @@ public class PMSService {
 //            }
 //        });
 
-        get("/mainIndex.html/alive", new GetSinglePublicationHandler(model));
+        get("/alive","application/json" ,new GetSinglePublicationHandler(model));
 
         get("/alive", new Route() {
             @Override
