@@ -20,6 +20,7 @@ table {
   border: solid 1px #ccc;    border-collapse: collapse;
   border-spacing: 0;
   position: relative; /* Add positioning */
+  width: 100%;
 }
 td, th {
   border-bottom: solid 1px #eee;

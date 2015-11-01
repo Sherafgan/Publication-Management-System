@@ -24,89 +24,18 @@ public class Sql2oModel implements Model {
         //uuidGenerator = new RandomUuidGenerator();
     }
 
-    /*@Override
-    public UUID createPost(String title, String content, List<String> categories) {
-        try (Connection conn = sql2o.beginTransaction()) {
-            UUID postUuid = uuidGenerator.generate();
-            conn.createQuery("insert into posts(post_uuid, title, content, publishing_date) VALUES (:post_uuid, :title, :content, :date)")
-                    .addParameter("post_uuid", postUuid)
-                    .addParameter("title", title)
-                    .addParameter("content", content)
-                    .addParameter("date", new Date())
-                    .executeUpdate();
-            categories.forEach((category) ->
-                    conn.createQuery("insert into posts_categories(post_uuid, category) VALUES (:post_uuid, :category)")
-                            .addParameter("post_uuid", postUuid)
-                            .addParameter("category", category)
-                            .executeUpdate());
-            conn.commit();
-            return postUuid;
-        }
-    }
-
-    @Override
-    public UUID createComment(UUID post, String author, String content) {
-        try (Connection conn = sql2o.open()) {
-            UUID commentUuid = uuidGenerator.generate();
-            conn.createQuery("insert into comments(comment_uuid, post_uuid, author, content, approved, submission_date) VALUES (:comment_uuid, :post_uuid, :author, :content, :approved, :date)")
-                    .addParameter("comment_uuid", commentUuid)
-                    .addParameter("post_uuid", post)
-                    .addParameter("author", author)
-                    .addParameter("content", content)
-                    .addParameter("approved", false)
-                    .addParameter("date", new Date())
-                    .executeUpdate();
-            return commentUuid;
-        }
-    }*/
-
-   /* @Override
-    public List<Publication> getAllParticipants() {
-        try (Connection conn = sql2o.open()) {
-            List<Post> posts = conn.createQuery("select * from posts")
-                    .executeAndFetch(Post.class);
-            posts.forEach((post) -> post.setCategories(getCategoriesFor(conn, post.getPost_uuid())));
-            return posts;
-        }
-    }*/
-
-    /*private List<String> getCategoriesFor(Connection conn, UUID post_uuid) {
-        return conn.createQuery("select category from posts_categories where post_uuid=:post_uuid")
-                .addParameter("post_uuid", post_uuid)
-                .executeAndFetch(String.class);
-    }*/
-
-//    @Override
-//    public List<Participant> getAllParticipantsOn(String name) {
-//        try (Connection conn = sql2o.open()) {
-//            return conn.createQuery("select * from comments where post_uuid=:post_uuid")
-//                    .addParameter("name", name)
-//                    .executeAndFetch(Participant.class);
-//        }
-//    }
-
-    /*@Override
-    public boolean existPost(UUID post) {
-        try (Connection conn = sql2o.open()) {
-            List<Post> posts = conn.createQuery("select * from posts where post_uuid=:post")
-                    .addParameter("post", post)
-                    .executeAndFetch(Post.class);
-            return posts.size() > 0;
-        }
-    }*/
-
     public List<Publication> getBooksOn(String attribute, String value) {
         String sql;
         if (attribute.equals("Publisher")) {
             sql = "SELECT pub_id, title, year, book.url, publisher, isbn " +
                     "FROM book JOIN publication ON book.key = publication.pub_key " +
                     "WHERE publisher = :target " +
-                    "limit 10";
+                    "limit 100";
         } else {
             sql = "SELECT pub_id, title, year, book.url, publisher, isbn " +
                     "FROM book JOIN publication ON book.key = publication.pub_key " +
                     "WHERE month = :target " +
-                    "limit 10";
+                    "limit 100";
         }
         try (Connection conn = sql2o.open()) {
             List<Main.Model.Book> books = conn.createQuery(sql)
@@ -122,12 +51,12 @@ public class Sql2oModel implements Model {
             sql = "SELECT pub_id, title, year, article.url, journal, month, volume, number " +
                     "FROM article JOIN publication ON article.key = publication.pub_key " +
                     "WHERE journal = :target " +
-                    "limit 10";
+                    "limit 100";
         } else {
             sql = "SELECT pub_id, title, year, article.url, journal, month, volume, number " +
                     "FROM article JOIN publication ON article.key = publication.pub_key " +
                     "WHERE month = :target " +
-                    "limit 10";
+                    "limit 100";
         }
         try (Connection conn = sql2o.open()) {
             List<Article> articles = conn.createQuery(sql)
@@ -145,14 +74,14 @@ public class Sql2oModel implements Model {
                 sql = "SELECT pub_id, title, year, url " +
                         "FROM publication " +
                         "WHERE title = :target " +
-                        "limit 10";
+                        "limit 100";
 
                 break;
             case "Year":
                 sql = "SELECT pub_id, title, year, url " +
                         "FROM  publication " +
                         "WHERE year = :target " +
-                        "limit 10";
+                        "limit 100";
                 break;
             case "Journal":
                 return getArticlesOn(attribute, value);
@@ -180,7 +109,7 @@ public class Sql2oModel implements Model {
                 "SELECT name, homepage " +
                         "FROM participant " +
                         "WHERE name = :targetName " +
-                        "limit 10";
+                        "limit 50";
         try (Connection conn = sql2o.open()) {
             if (attribute.equals("1")) {
                 List<Participant> participants = conn.createQuery(sql)

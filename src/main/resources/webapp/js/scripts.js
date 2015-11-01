@@ -41,30 +41,22 @@ function redirectToMainPage() {
     window.location = "mainIndex.html";
 }
 
+//$(document).ready(function() {
+//    $('#my-author-table').css("display","none");
+//    $('#my-pub-table').css("display","none");
+//});
+
 
 $("#submitbtn").click(function () {
-    alert("ok from js");
     var entity = document.getElementById("entity");
     var selectedEntity = entity.options[entity.selectedIndex].value;
     var attribute = document.getElementById("attribute");
     var selectedAttribute = attribute.options[attribute.selectedIndex].value;
     var textEdit = document.getElementById("in");
     var searchText = textEdit.value;
-    alert("entity to send is " + selectedEntity);
-    alert("attribute to send is " + selectedAttribute);
-    alert("search to send is " + searchText);
-    var json_records = [
-        {
-            "band": "Weezer",
-            "song": "El Scorcho"
-        },
-        {
-            "band": "Chevelle",
-            "song": "Family System"
-        }
-    ];
-    //var $records = $('#json-records'),
-    //    myRecords = JSON.parse($records.text());
+    //alert("entity to send is " + selectedEntity);
+    //alert("attribute to send is " + selectedAttribute);
+    //alert("search to send is " + searchText);
 
     if (selectedEntity == 1) {
         alert(selectedEntity);
@@ -76,19 +68,29 @@ $("#submitbtn").click(function () {
 
         })
             .done(function (msg) {
-                $('#my-pub-table').dynatable({
-                    dataset: {
-                        records: msg
-                    }
-                });
+                var arr = JSON.parse(msg);
+                var i;
+                var out = "<table>";
 
+                for(i = 0; i < arr.length; i++) {
+                    out += "<tr><td>" +
+                        arr[i].Name +
+                        "</td><td>" +
+                        arr[i].City +
+                        "</td><td>" +
+                        arr[i].Country +
+                        "</td></tr>";
+                }
+                out += "</table>";
+                document.getElementById("id01").innerHTML = out;
             })
             .fail(function (xhr, status, errorThrown) {
                 alert("Sorry. Server unavailable. ");
             });
     }
+
     else if (selectedEntity == 2) {
-        alert(selectedEntity);
+
         $.ajax({
             type: "GET",
             url: "alive",
@@ -96,11 +98,7 @@ $("#submitbtn").click(function () {
             data: {entity: selectedEntity, attribute: selectedAttribute, search: searchText}
         })
             .done(function (msg) {
-                $('#my-pub-table').dynatable({
-                    dataset: {
-                        records: msg
-                    }
-                });
+                $.jsontotable(msg, { id: '#jsontotable', header: false });
             })
             .fail(function (xhr, status, errorThrown) {
                 alert("Sorry. Server unavailable. ");

@@ -1,14 +1,10 @@
 package Main;
 
 import Main.Model.Model;
-import Main.handlers.GetSinglePublicationHandler;
+import Main.handlers.Handler;
 import Main.sql2omodel.Sql2oModel;
 import com.beust.jcommander.JCommander;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.util.JSONWrappedObject;
 import org.sql2o.Sql2o;
-import org.sql2o.converters.UUIDConverter;
 import org.sql2o.quirks.PostgresQuirks;
 import spark.Request;
 import spark.Response;
@@ -17,7 +13,8 @@ import spark.Spark;
 
 import java.util.logging.Logger;
 
-import static spark.Spark.*;
+import static spark.Spark.get;
+import static spark.Spark.post;
 
 /**
  * Created by nikitaborodulin on 28/10/15.
@@ -50,27 +47,6 @@ public class PMSService {
 
         Model model = new Sql2oModel(sql2o);
 
-        /*FreeMarkerEngine freeMarkerEngine = new FreeMarkerEngine();
-        Configuration cfg = new Configuration(Configuration.VERSION_2_3_23);
-        cfg.setTemplateLoader(new ClassTemplateLoader(PMSService.class, "/"));
-        cfg.setDefaultEncoding("UTF-8");
-        freeMarkerEngine.setConfiguration(cfg);*/
-
-        // get publication on journal (using HTTP get method)
-
-       // get("entity/:atr/:numb/:srch", new GetSinglePublicationHandler(model));
-
-//        post("pub", new Route() {
-//            @Override
-//            public Object handle(Request request, Response response) throws Exception {
-//                String attribute = request.queryParams("attribute");
-//                String value = request.queryParams("value");
-//                new GetSinglePublicationHandler(model,attribute,value);
-//                return "pub";
-//            }
-//        });
-
-//        get("/users", (req, res) -> userService.getAllUsers(), json());
 
         post("/author", new Route() {
             @Override
@@ -81,59 +57,8 @@ public class PMSService {
             }
         });
 
-//        get("/data.json", new Route() {
-//            @Override
-//            public Object handle(Request request, Response response) throws Exception {
-//                final JsonNodeFactory nodeFactory = JsonNodeFactory.instance;
-//
-//                ObjectNode node = nodeFactory.objectNode();
-//
-//                ObjectNode child = nodeFactory.objectNode(); // the child
-//
-//                child.put("message", "test");
-//
-//// etc etc
-//
-//// and then:
-//
-//                node.put("notification", child);
-//                return null;
-//            }
-//        })
 
-        //get("/publication/:title", new GetSinglePublicationHandler(model));
+        get("/alive", new Handler(model));
 
-//        get("/publication/:title", (request, response) -> {
-//            return "Hello: " + request.params(":title");
-//        });
-
-
-//        get("/mainIndex.html/alive", (req, res) -> {
-//            try {
-//                int entity = Integer.parseInt(req.queryParams("entity"));
-//                int atr = Integer.parseInt(req.queryParams("atr"));
-//                String search = req.queryParams("search");
-//                if (entity == 1)  { // author
-//
-//                }
-//                else if (entity == 2) { // publication
-//
-//                }
-//                return "You requested a publication by " + entity + " and number="
-//                        + atr;
-//            } catch (Exception e) {
-//                halt(502, "Error, check your parameters!");
-//                return "";
-//            }
-//        });
-
-        get("/alive" ,new GetSinglePublicationHandler(model));
-
-//        get("/alive", new Route() {
-//            @Override
-//            public Object handle(Request request, Response response) throws Exception {
-//                return "ok";
-//            }
-//        });
     }
 }

@@ -19,12 +19,12 @@ import java.util.*;
 /**
  * Created by nikitaborodulin on 30/10/15.
  */
-public class GetSinglePublicationHandler implements Route {
+public class Handler implements Route {
 
     protected Model model;
 
 
-    public GetSinglePublicationHandler(Model model) {
+    public Handler(Model model) {
         this.model = model;
     }
 
