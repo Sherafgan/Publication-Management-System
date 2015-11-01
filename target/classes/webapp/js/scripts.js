@@ -43,6 +43,41 @@ function redirectToMainPage() {
 
 
 $("#submitbtn").click(function () {
+    $('#example-table').dynatable();
+
+    $('#example-ul').dynatable({
+        table: {
+            rowFilter: function(rowIndex, record) {
+                return $(
+                    '<li class="row">This is my name: <span class="the-name">' + record.name + '</span> and this is my ID: <span class="the-id">' + record.id + '</span></div>'
+                );
+            },
+            bodyRowSelector: 'li.row'
+        },
+        dataset: {
+            records: [
+                {id: 1, name: "Alfa Jango"},
+                {id: 2, name: "Bellota"}
+            ]
+        }
+    });
+
+    $('#ajax-ul').dynatable({
+        table: {
+            rowFilter: function(rowIndex, record) {
+                return $(
+                    '<li class="row">This is my name: <span class="the-name">' + record.name + '</span> and this is my ID: <span class="the-id">' + record.id + '</span></div>'
+                );
+            },
+            bodyRowSelector: 'li.row'
+        },
+        dataset: {
+            ajax: true,
+            ajaxUrl: 'ajax_data.json',
+            records: []
+        }
+    });
+});
     alert("ok from js");
     var entity = document.getElementById("entity");
     var selectedEntity = entity.options[entity.selectedIndex].value;
@@ -53,6 +88,19 @@ $("#submitbtn").click(function () {
     alert("entity to send is " + selectedEntity);
     alert("attribute to send is " + selectedAttribute);
     alert("search to send is " + searchText);
+    var json_records = [
+        {
+            "band": "Weezer",
+            "song": "El Scorcho"
+        },
+        {
+            "band": "Chevelle",
+            "song": "Family System"
+        }
+    ];
+    //var $records = $('#json-records'),
+    //    myRecords = JSON.parse($records.text());
+
     if (selectedEntity == 1) {
         alert(selectedEntity);
         $.ajax({
@@ -63,7 +111,11 @@ $("#submitbtn").click(function () {
 
         })
             .done(function (msg) {
-                //showResponse1(msg);
+                $('#my-final-table').dynatable({
+                    dataset: {
+                        records: msg
+                    }
+                });
 
             })
             .fail(function (xhr, status, errorThrown) {
@@ -79,7 +131,11 @@ $("#submitbtn").click(function () {
             data: {entity: selectedEntity, attribute: selectedAttribute, search: searchText}
         })
             .done(function (msg) {
-                showResponse2(msg);
+                $('#my-final-table').dynatable({
+                    dataset: {
+                        records: msg
+                    }
+                });
             })
             .fail(function (xhr, status, errorThrown) {
                 alert("Sorry. Server unavailable. ");

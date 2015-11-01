@@ -53,6 +53,19 @@ $("#submitbtn").click(function () {
     alert("entity to send is " + selectedEntity);
     alert("attribute to send is " + selectedAttribute);
     alert("search to send is " + searchText);
+    var json_records = [
+        {
+            "band": "Weezer",
+            "song": "El Scorcho"
+        },
+        {
+            "band": "Chevelle",
+            "song": "Family System"
+        }
+    ];
+    //var $records = $('#json-records'),
+    //    myRecords = JSON.parse($records.text());
+
     if (selectedEntity == 1) {
         alert(selectedEntity);
         $.ajax({
@@ -63,7 +76,11 @@ $("#submitbtn").click(function () {
 
         })
             .done(function (msg) {
-                //showResponse1(msg);
+                $('#my-pub-table').dynatable({
+                    dataset: {
+                        records: msg
+                    }
+                });
 
             })
             .fail(function (xhr, status, errorThrown) {
@@ -79,7 +96,11 @@ $("#submitbtn").click(function () {
             data: {entity: selectedEntity, attribute: selectedAttribute, search: searchText}
         })
             .done(function (msg) {
-                showResponse2(msg);
+                $('#my-pub-table').dynatable({
+                    dataset: {
+                        records: msg
+                    }
+                });
             })
             .fail(function (xhr, status, errorThrown) {
                 alert("Sorry. Server unavailable. ");

@@ -87,18 +87,8 @@ public class GetSinglePublicationHandler implements Route {
             Answer answer = process(urlParams);
             response.status(answer.getCode());
             response.type("application/json");
-            String carJson =
-                    "{ \"brand\" : \"Mercedes\", \"doors\" : 5," +
-                            "  \"owners\" : [\"John\", \"Jack\", \"Jill\"]," +
-                            "  \"nestedObject\" : { \"field\" : \"value\" } }";
-
-            //response.body(carJson);
             response.body(answer.getBody());
             return answer.getBody();
-            //String jsonStr = "[{\"No\":\"1\",\"Name\":\"ABC\"},{\"No\":\"2\",\"Name\":\"PQR\"},{\"No\":\"3\",\"Name\":\"XYZ\"}]";
-
-            //JsonParser jsonParser = new JsonParser();
-            //JsonElement element = jsonParser.parse(str);
         } catch (Exception e) {
             response.status(400);
             response.body(e.getMessage());
