@@ -70,10 +70,6 @@ public class PMSService {
 //            }
 //        });
 
-        after((req, res) -> {
-            res.type("application/json");
-        });
-
 //        get("/users", (req, res) -> userService.getAllUsers(), json());
 
         post("/author", new Route() {
@@ -131,13 +127,13 @@ public class PMSService {
 //            }
 //        });
 
-        get("/alive","application/json" ,new GetSinglePublicationHandler(model));
+        get("/alive" ,new GetSinglePublicationHandler(model));
 
-        get("/alive", new Route() {
-            @Override
-            public Object handle(Request request, Response response) throws Exception {
-                return "ok";
-            }
-        });
+//        get("/alive", new Route() {
+//            @Override
+//            public Object handle(Request request, Response response) throws Exception {
+//                return "ok";
+//            }
+//        });
     }
 }

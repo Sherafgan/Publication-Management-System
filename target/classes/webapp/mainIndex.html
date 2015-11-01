@@ -40,9 +40,10 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                     </ul>
-                    <form class="navbar-form navbar-left" method="get">
+                    <div id="searchForm" class="navbar-form navbar-left">
                         <span class="custom-dropdown">
-                            <select id="entity" name="entity" class="custom-dropdown" onchange="configureDropDownLists(this,document.getElementById('attribute'))">
+                            <select id="entity" name="entity" class="custom-dropdown"
+                                    onchange="configureDropDownLists(this,document.getElementById('attribute'))">
                                 <option value="1">Author</option>
                                 <option value="2">Publication</option>
                             </select>
@@ -58,11 +59,12 @@
                             <input id="in" type="text" name="search" value="" class="form-control"
                                    placeholder="Search...">
                         </div>
-                        <input id="submitbtn" class="btn btn-default" type="submit" value="Search">
-                    </form>
+                        <input id="submitbtn" class="btn btn-default" type="button" value="Search">
+                    </div>
 
                     <div class="controlPanel">
-                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Add</button>
+                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Add
+                        </button>
                         <button type="button" class="btn btn-danger">Delete</button>
                     </div>
                 </div>
@@ -107,22 +109,6 @@
                 </div>
             </div>
         </div>
-        <table class="table">
-            <thead>
-            <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Email</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr class="sample-table">
-                <td><input type="text" name="first_name[]" class="form-control"></td>
-                <td><input type="text" name="last_name[]" class="form-control"></td>
-                <td><input type="text" name="email[]" class="form-control"></td>
-            </tr>
-            </tbody>
-        </table>
 
     </div>
 </div>
@@ -130,8 +116,6 @@
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/scripts.js"></script>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-<script src="js/mountable.min.js"></script>
 
 </body>
 

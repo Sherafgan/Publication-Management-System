@@ -41,136 +41,33 @@ function redirectToMainPage() {
     window.location = "mainIndex.html";
 }
 
-function CreateTableView(objArray, theme, enableHeader) {
-    // set optional theme parameter
-    if (theme === undefined) {
-        theme = 'mediumTable'; //default theme
-    }
 
-    if (enableHeader === undefined) {
-        enableHeader = true; //default enable headers
-    }
-
-    // If the returned data is an object do nothing, else try to parse
-    var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
-
-    var str = '<table class="' + theme + '">';
-
-    // table head
-    if (enableHeader) {
-        str += '<thead><tr>';
-        for (var index in array[0]) {
-            str += '<th scope="col">' + index + '</th>';
-        }
-        str += '</tr></thead>';
-    }
-
-    // table body
-    str += '<tbody>';
-    for (var i = 0; i < array.length; i++) {
-        str += (i % 2 == 0) ? '<tr class="alt">' : '<tr>';
-        for (var index in array[i]) {
-            str += '<td>' + array[i][index] + '</td>';
-        }
-        str += '</tr>';
-    }
-    str += '</tbody>'
-    str += '</table>';
-    return str;
-}
-
-function CreateDetailView(objArray, theme, enableHeader) {
-    // set optional theme parameter
-    if (theme === undefined) {
-        theme = 'mediumTable';  //default theme
-    }
-
-    if (enableHeader === undefined) {
-        enableHeader = true; //default enable headers
-    }
-
-    // If the returned data is an object do nothing, else try to parse
-    var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
-
-    var str = '<table class="' + theme + '">';
-    str += '<tbody>';
-
-
-    for (var i = 0; i < array.length; i++) {
-        var row = 0;
-        for (var index in array[i]) {
-            str += (row % 2 == 0) ? '<tr class="alt">' : '<tr>';
-
-            if (enableHeader) {
-                str += '<th scope="row">' + index + '</th>';
-            }
-
-            str += '<td>' + array[i][index] + '</td>';
-            str += '</tr>';
-            row++;
-        }
-    }
-    str += '</tbody>'
-    str += '</table>';
-    return str;
-}
-
-$("form").submit(function (event) {
-    var sampleData =
-        [
-            {
-                "first_name": "John",
-                "last_name": "Appleseed",
-                "email": "john@appleseed.com"
-            },
-            {
-                "first_name": "João",
-                "last_name": "Canabrava",
-                "email": "joao@canabrava.com"
-            },
-            {
-                "first_name": "Patrick",
-                "last_name": "Grapeseed",
-                "email": "patrick@grapeseed.com"
-            },
-            {
-                "first_name": "Xingling",
-                "last_name": "Ping Pong",
-                "email": "xingling@pingpong.com"
-            }
-        ];
-    // $('table').mounTable(DATA,OPTIONS);
-
-
+$("#submitbtn").click(function () {
+    alert("ok from js");
     var entity = document.getElementById("entity");
     var selectedEntity = entity.options[entity.selectedIndex].value;
     var attribute = document.getElementById("attribute");
     var selectedAttribute = attribute.options[attribute.selectedIndex].value;
     var textEdit = document.getElementById("in");
     var searchText = textEdit.value;
+    alert("entity to send is " + selectedEntity);
+    alert("attribute to send is " + selectedAttribute);
+    alert("search to send is " + searchText);
     if (selectedEntity == 1) {
         alert(selectedEntity);
         $.ajax({
             type: "GET",
             url: "alive",
-            //dataType: 'json',
-            data: {attribute: selectedAttribute, value: searchText},
-            dataType: "json"
-        })
-            .done(function (data) {
-                alert(data);
-                for (var i=0; i<myObj.length; i++) {
-                    console.log(myObj[i]["result_code"]);
-                }
+            dataType: 'json',
+            data: {entity: selectedEntity, attribute: selectedAttribute, search: searchText}
 
-                //$('table').mounTable(msg,{
-                //    model: '.mountable-model'
-                //});
+        })
+            .done(function (msg) {
+                //showResponse1(msg);
+
             })
             .fail(function (xhr, status, errorThrown) {
-                //alert("Sorry. Server unavailable. ");
-                alert(status);
-                console.log("Post error: " + errorThrown);
+                alert("Sorry. Server unavailable. ");
             });
     }
     else if (selectedEntity == 2) {
@@ -178,44 +75,83 @@ $("form").submit(function (event) {
         $.ajax({
             type: "GET",
             url: "alive",
-            data: {attribute: selectedAttribute, value: searchText},
-            dataType: "json"
+            dataType: 'json',
+            data: {entity: selectedEntity, attribute: selectedAttribute, search: searchText}
         })
-            .done(function (data) {
-                for (var key in responseData) {
-                    alert(responseData[key]);
-                }
-                var myObj = JSON.parse(data);
-                alert(myObj);
-                for (var i=0; i<myObj.length; i++) {
-                    console.log(myObj[i]["result_code"]);
-                }
+            .done(function (msg) {
+                showResponse2(msg);
             })
             .fail(function (xhr, status, errorThrown) {
-                //alert("Sorry. Server unavailable. ");
-                alert(status);
-                console.log("Post error: " + errorThrown);
+                alert("Sorry. Server unavailable. ");
             });
     }
-    //if ($("input:first").val() === "c") {
-    //    $.ajax({
-    //        type: "GET",
-    //        url: "pub/",
-    //        //dataType: 'json',
-    //        data: {attribute: }
-    //    })
-    //        .done(function (msg) {
-    //            showResponse(msg);
-    //        })
-    //        .fail(function (xhr, status, errorThrown) {
-    //            alert("Sorry. Server unavailable. ");
-    //        });
-    //}
     else {
         $("p").text("Not valid!").show().fadeOut(1000);
         event.preventDefault();
     }
 });
+
+//$("form").submit(function (event) {
+//    var entity = document.getElementById("entity");
+//    var selectedEntity = entity.options[entity.selectedIndex].value;
+//    var attribute = document.getElementById("attribute");
+//    var selectedAttribute = attribute.options[attribute.selectedIndex].value;
+//    var textEdit = document.getElementById("in");
+//    var searchText = textEdit.value;
+//    if (selectedEntity == 1) {
+//        alert(selectedEntity);
+//        $.ajax({
+//            type: "GET",
+//            url: "alive",
+//            //dataType: 'json',
+//            data: {attribute: selectedAttribute, value: searchText},
+//            dataType: "json"
+//        })
+//            .done(function (data) {
+//                alert(data);
+//                for (var i=0; i<myObj.length; i++) {
+//                    console.log(myObj[i]["result_code"]);
+//                }
+//
+//                //$('table').mounTable(msg,{
+//                //    model: '.mountable-model'
+//                //});
+//            })
+//            .fail(function (xhr, status, errorThrown) {
+//                //alert("Sorry. Server unavailable. ");
+//                alert(status);
+//                console.log("Post error: " + errorThrown);
+//            });
+//    }
+//    else if (selectedEntity == 2) {
+//        alert(selectedEntity);
+//        $.ajax({
+//            type: "GET",
+//            url: "alive",
+//            data: {attribute: selectedAttribute, value: searchText},
+//            dataType: "json"
+//        })
+//            .done(function (data) {
+//                for (var key in responseData) {
+//                    alert(responseData[key]);
+//                }
+//                var myObj = JSON.parse(data);
+//                alert(myObj);
+//                for (var i=0; i<myObj.length; i++) {
+//                    console.log(myObj[i]["result_code"]);
+//                }
+//            })
+//            .fail(function (xhr, status, errorThrown) {
+//                //alert("Sorry. Server unavailable. ");
+//                alert(status);
+//                console.log("Post error: " + errorThrown);
+//            });
+//    }
+//    else {
+//        $("p").text("Not valid!").show().fadeOut(1000);
+//        event.preventDefault();
+//    }
+//});
 
 function showResponse1(resp) {
     alert("RESPONSE");
