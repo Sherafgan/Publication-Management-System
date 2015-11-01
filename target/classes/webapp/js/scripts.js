@@ -41,11 +41,6 @@ function redirectToMainPage() {
     window.location = "mainIndex.html";
 }
 
-//$(document).ready(function() {
-//    $('#my-author-table').css("display","none");
-//    $('#my-pub-table').css("display","none");
-//});
-
 
 $("#submitbtn").click(function () {
     var entity = document.getElementById("entity");
@@ -54,12 +49,9 @@ $("#submitbtn").click(function () {
     var selectedAttribute = attribute.options[attribute.selectedIndex].value;
     var textEdit = document.getElementById("in");
     var searchText = textEdit.value;
-    //alert("entity to send is " + selectedEntity);
-    //alert("attribute to send is " + selectedAttribute);
-    //alert("search to send is " + searchText);
 
-    if (selectedEntity == 1) {
-        alert(selectedEntity);
+    if (selectedEntity == 1 || selectedEntity == 2) {
+        document.getElementById("jsontotable").innerHTML = "";
         $.ajax({
             type: "GET",
             url: "alive",
@@ -68,37 +60,7 @@ $("#submitbtn").click(function () {
 
         })
             .done(function (msg) {
-                var arr = JSON.parse(msg);
-                var i;
-                var out = "<table>";
-
-                for(i = 0; i < arr.length; i++) {
-                    out += "<tr><td>" +
-                        arr[i].Name +
-                        "</td><td>" +
-                        arr[i].City +
-                        "</td><td>" +
-                        arr[i].Country +
-                        "</td></tr>";
-                }
-                out += "</table>";
-                document.getElementById("id01").innerHTML = out;
-            })
-            .fail(function (xhr, status, errorThrown) {
-                alert("Sorry. Server unavailable. ");
-            });
-    }
-
-    else if (selectedEntity == 2) {
-
-        $.ajax({
-            type: "GET",
-            url: "alive",
-            dataType: 'json',
-            data: {entity: selectedEntity, attribute: selectedAttribute, search: searchText}
-        })
-            .done(function (msg) {
-                $.jsontotable(msg, { id: '#jsontotable', header: false });
+                $.jsontotable(msg, {id: '#jsontotable', header: true});
             })
             .fail(function (xhr, status, errorThrown) {
                 alert("Sorry. Server unavailable. ");
@@ -109,68 +71,6 @@ $("#submitbtn").click(function () {
         event.preventDefault();
     }
 });
-
-//$("form").submit(function (event) {
-//    var entity = document.getElementById("entity");
-//    var selectedEntity = entity.options[entity.selectedIndex].value;
-//    var attribute = document.getElementById("attribute");
-//    var selectedAttribute = attribute.options[attribute.selectedIndex].value;
-//    var textEdit = document.getElementById("in");
-//    var searchText = textEdit.value;
-//    if (selectedEntity == 1) {
-//        alert(selectedEntity);
-//        $.ajax({
-//            type: "GET",
-//            url: "alive",
-//            //dataType: 'json',
-//            data: {attribute: selectedAttribute, value: searchText},
-//            dataType: "json"
-//        })
-//            .done(function (data) {
-//                alert(data);
-//                for (var i=0; i<myObj.length; i++) {
-//                    console.log(myObj[i]["result_code"]);
-//                }
-//
-//                //$('table').mounTable(msg,{
-//                //    model: '.mountable-model'
-//                //});
-//            })
-//            .fail(function (xhr, status, errorThrown) {
-//                //alert("Sorry. Server unavailable. ");
-//                alert(status);
-//                console.log("Post error: " + errorThrown);
-//            });
-//    }
-//    else if (selectedEntity == 2) {
-//        alert(selectedEntity);
-//        $.ajax({
-//            type: "GET",
-//            url: "alive",
-//            data: {attribute: selectedAttribute, value: searchText},
-//            dataType: "json"
-//        })
-//            .done(function (data) {
-//                for (var key in responseData) {
-//                    alert(responseData[key]);
-//                }
-//                var myObj = JSON.parse(data);
-//                alert(myObj);
-//                for (var i=0; i<myObj.length; i++) {
-//                    console.log(myObj[i]["result_code"]);
-//                }
-//            })
-//            .fail(function (xhr, status, errorThrown) {
-//                //alert("Sorry. Server unavailable. ");
-//                alert(status);
-//                console.log("Post error: " + errorThrown);
-//            });
-//    }
-//    else {
-//        $("p").text("Not valid!").show().fadeOut(1000);
-//        event.preventDefault();
-//    }
-//});
 
 function showResponse1(resp) {
     alert("RESPONSE");
