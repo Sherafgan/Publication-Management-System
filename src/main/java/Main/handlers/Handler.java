@@ -6,15 +6,16 @@ import Main.Model.Participant;
 import Main.Model.Publication;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by nikitaborodulin on 30/10/15.
@@ -29,13 +30,9 @@ public class Handler implements Route {
     }
 
     protected Answer processImpl(Map<String, String> urlParams) {
-//        if (!urlParams.containsKey(":title")) {
-//            throw new IllegalArgumentException();
-//        }
         String value, entity, attribute;
 
         try {
-            //st = UUID.fromString(urlParams.get(":journal"));
             entity = urlParams.get("entity");
             attribute = urlParams.get("atr");
             value = urlParams.get("search");
@@ -73,16 +70,14 @@ public class Handler implements Route {
     public Object handle(Request request, Response response) throws Exception {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            //Map<String, String> map = new HashMap<String, String>();
             Map<String, String> m = request.params();
             String entity = request.queryParams("entity");
             String atr = request.queryParams("attribute");
             String search = request.queryParams("search");
-            //Map<String, String> urlParams = request.params();
             Map<String, String> map = new HashMap<>();
-            map.put("entity",entity);
-            map.put("atr",atr);
-            map.put("search",search);
+            map.put("entity", entity);
+            map.put("atr", atr);
+            map.put("search", search);
             Map<String, String> urlParams = Collections.unmodifiableMap(map);
             Answer answer = process(urlParams);
             response.status(answer.getCode());

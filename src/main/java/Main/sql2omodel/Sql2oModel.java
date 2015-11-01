@@ -1,9 +1,5 @@
 package Main.sql2omodel;
 
-
-//import me.tomassetti.RandomUuidGenerator;
-//import me.tomassetti.UuidGenerator;
-
 import Main.Model.Article;
 import Main.Model.Model;
 import Main.Model.Participant;
@@ -17,11 +13,9 @@ import java.util.List;
 public class Sql2oModel implements Model {
 
     private Sql2o sql2o;
-    //private UuidGenerator uuidGenerator;
 
     public Sql2oModel(Sql2o sql2o) {
         this.sql2o = sql2o;
-        //uuidGenerator = new RandomUuidGenerator();
     }
 
     public void addition(String entity, ArrayList<String> values) {
@@ -134,7 +128,7 @@ public class Sql2oModel implements Model {
                 "SELECT name, homepage " +
                         "FROM participant " +
                         "WHERE name = :targetName " +
-                        "limit 50";
+                        "limit 100";
         try (Connection conn = sql2o.open()) {
             if (attribute.equals("1")) {
                 List<Participant> participants = conn.createQuery(sql)
@@ -146,23 +140,3 @@ public class Sql2oModel implements Model {
         }
     }
 }
-
-    /*@Override
-    public void updatePost(Post post) {
-        try (Connection conn = sql2o.open()) {
-            conn.createQuery("update posts set title=:title, content=:content where post_uuid=:post_uuid")
-                    .addParameter("post_uuid", post.getPost_uuid())
-                    .addParameter("title", post.getTitle())
-                    .addParameter("content", post.getContent())
-                    .executeUpdate();
-        }
-    }
-
-    @Override
-    public void deletePost(UUID uuid) {
-        try (Connection conn = sql2o.open()) {
-            conn.createQuery("delete from posts where post_uuid=:post_uuid")
-                    .addParameter("post_uuid", uuid)
-                    .executeUpdate();
-        }
-    }*/

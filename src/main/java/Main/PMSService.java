@@ -7,15 +7,11 @@ import Main.sql2omodel.Sql2oModel;
 import com.beust.jcommander.JCommander;
 import org.sql2o.Sql2o;
 import org.sql2o.quirks.PostgresQuirks;
-import spark.Request;
-import spark.Response;
-import spark.Route;
 import spark.Spark;
 
 import java.util.logging.Logger;
 
 import static spark.Spark.get;
-import static spark.Spark.post;
 
 /**
  * Created by nikitaborodulin on 28/10/15.
@@ -36,28 +32,12 @@ public class PMSService {
         logger.finest("Options.dbPort = " + options.dbPort);
         logger.finest("Options.servicePort = " + options.servicePort);
 
-        //port(options.servicePort);
 
         Sql2o sql2o = new Sql2o("jdbc:postgresql://" + options.dbHost + ":" + options.dbPort + "/" + options.database,
                 options.dbUsername, options.dbPassword, new PostgresQuirks() {
-            {
-                // make sure we use default UUID converter.
-                //converters.put(Integer.class, new UUIDConverter());
-            }
         });
 
         Model model = new Sql2oModel(sql2o);
-
-
-        post("/author", new Route() {
-            @Override
-            public Object handle(Request request, Response response) throws Exception {
-                String attribute = request.queryParams("attribute");
-                String value = request.queryParams("value");
-                return "author";
-            }
-        });
-
 
         get("/alive", new Handler(model));
 
