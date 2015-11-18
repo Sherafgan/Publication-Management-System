@@ -1,6 +1,7 @@
 package Main.handlers;
 
 import Main.Answer;
+import Main.DBMS;
 import Main.Model.Model;
 import Main.Model.Participant;
 import Main.Model.Publication;
@@ -71,6 +72,7 @@ public class Handler implements Route {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             Map<String, String> m = request.params();
+
             String entity = request.queryParams("entity");
             String atr = request.queryParams("attribute");
             String search = request.queryParams("search");
@@ -79,7 +81,12 @@ public class Handler implements Route {
             map.put("atr", atr);
             map.put("search", search);
             Map<String, String> urlParams = Collections.unmodifiableMap(map);
-            Answer answer = process(urlParams);
+
+            Answer answer = DBMS.search(entity,atr,search);
+
+
+
+            //Answer answer = process(urlParams);
             response.status(answer.getCode());
             response.type("application/json");
             response.body(answer.getBody());
