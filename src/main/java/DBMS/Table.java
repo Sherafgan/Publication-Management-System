@@ -11,8 +11,8 @@ import java.util.TreeMap;
  *         20.11.15
  */
 public class Table {
-    private TreeMap<String, Tuple> indexMap;
-    private List<Multimap<String, String>> otherMaps;
+    public TreeMap<String, Tuple> indexMap;
+    public List<Multimap<String, String>> otherMaps;
 
     public Table(TreeMap<String, Tuple> indexMap, List<Multimap<String, String>> otherMaps) {
         this.indexMap = indexMap;
