@@ -5,9 +5,9 @@ import lombok.Data;
 @Data
 public class Publication implements Tuple {
     private String pub_id;
-    protected String title;
-    protected String year;
-    protected String url;
+    public String title;
+    public String year;
+    public String url;
 
     public Publication() {
     }

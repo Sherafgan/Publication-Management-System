@@ -1,7 +1,9 @@
 package DBMS;
 
 import Main.Answer;
+import Main.Model.Article;
 import Main.Model.Author;
+import Main.Model.Publication;
 import Main.Model.Tuple;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
@@ -41,23 +43,72 @@ public class DBMS {
     }
 
     public static Answer search(String entity, String atr, String search) {
+
         switch (entity) {
             case "1":
                 TreeMap<String, Tuple> authorsIndex = tables.get(1).indexMap;
-                Multimap<String, String> authorsName = tables.get(1).otherMaps.get(0);
-                List<Author> result = new ArrayList<>();
-                Collection<String> authorsID = authorsName.get(search);
+                Multimap<String, String> authorsNames = tables.get(1).otherMaps.get(0);
+                Collection<String> authorsID = authorsNames.get(search);
+                List<Author> resultAuthors = new ArrayList<>();
                 if (!authorsID.isEmpty()) {
                     Tuple tuple;
                     for (String s : authorsID) {
                         tuple = authorsIndex.get(s);
-                        result.add((Author) tuple);
+                        resultAuthors.add((Author) tuple);
                     }
                 }
-                return Answer.ok(dataToJson(result));
+                return Answer.ok(dataToJson(resultAuthors));
             case "2":
-                break;
+                List<Publication> resultPublications = new ArrayList<>();
+                List<Article> resultArticles = new ArrayList<>();
+                Collection<String> publicationsID = new ArrayList<>();
+                TreeMap<String, Tuple> publicationsIndex = tables.get(3).indexMap;
+                if (atr.equals("Title")) {
+                    Multimap<String, String> publicationsTitles = tables.get(3).otherMaps.get(0);
+                    publicationsID = publicationsTitles.get(search);
+                } else if (atr.equals("Year")) {
+                    Multimap<String, String> publicationsYears = tables.get(3).otherMaps.get(1);
+                    publicationsID = publicationsYears.get(search);
+                } else if (atr.equals("Journal")) { //TODO find matched publication
+                    TreeMap<String, Tuple> articlesIndex = tables.get(0).indexMap;
+                    Multimap<String, String> articlesJournals = tables.get(0).otherMaps.get(0);
+                    Collection<String> articlesID = articlesJournals.get(search);
+                    for (String ss : articlesID) {
+                        Article article = (Article) articlesIndex.get(ss);
+                        Tuple matchedPublication = publicationsIndex.get(ss);
+                        Article joinedArticle = new Article();
+//                        joinedArticle.title = matchedPublication.title;
+//                        joinedArticle.year = matchedPublication.year;
+                        joinedArticle.journal = article.journal;
+                        joinedArticle.month = article.month;
+                        joinedArticle.volume = article.volume;
+                        joinedArticle.number = article.number;
+                        resultArticles.add(joinedArticle);
+                    }
+                    if (!resultArticles.isEmpty()) {
+                        return Answer.ok(dataToJson(resultArticles));
+                    }
+                }
+                if (!publicationsID.isEmpty()) {
+                    Tuple tuple;
+                    for (String s : publicationsID) {
+                        tuple = publicationsIndex.get(s);
+                        resultPublications.add((Publication) tuple);
+                    }
+                    return Answer.ok(dataToJson(resultPublications));
+                }
+                switch (atr) {
+                    case "Journal":
+                        break;
+                    case "Month":
+                        break;
+                    case "Publisher":
+                        break;
+                    case "ISBN":
+                        break;
+                }
         }
+
         return null;
     }
 

@@ -4,10 +4,10 @@ package Main.Model;
  * Created by nikitaborodulin on 31/10/15.
  */
 public class Article extends Publication implements Tuple {
-    String journal;
-    String month;
-    String volume;
-    String number;
+    public String journal;
+    public String month;
+    public String volume;
+    public String number;
 
     public Article() {
     }
