@@ -1,8 +1,8 @@
 package Main.sql2omodel;
 
 import Main.Model.Article;
+import Main.Model.Author;
 import Main.Model.Model;
-import Main.Model.Participant;
 import Main.Model.Publication;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
@@ -123,7 +123,7 @@ public class Sql2oModel implements Model {
     }
 
     @Override
-    public List<Participant> getParticipantsOn(String attribute, String value) {
+    public List<Author> getParticipantsOn(String attribute, String value) {
         String sql =
                 "SELECT name, homepage " +
                         "FROM participant " +
@@ -131,10 +131,10 @@ public class Sql2oModel implements Model {
                         "limit 100";
         try (Connection conn = sql2o.open()) {
             if (attribute.equals("1")) {
-                List<Participant> participants = conn.createQuery(sql)
+                List<Author> authors = conn.createQuery(sql)
                         .addParameter("targetName", value)
-                        .executeAndFetch(Participant.class);
-                return participants;
+                        .executeAndFetch(Author.class);
+                return authors;
             } else
                 return null;
         }

@@ -1,9 +1,9 @@
 package Main.handlers;
 
+import DBMS.DBMS;
 import Main.Answer;
-import Main.DBMS;
+import Main.Model.Author;
 import Main.Model.Model;
-import Main.Model.Participant;
 import Main.Model.Publication;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -42,7 +42,7 @@ public class Handler implements Route {
         }
         switch (entity) {
             case "1":
-                List<Participant> authors = model.getParticipantsOn(attribute, value);
+                List<Author> authors = model.getParticipantsOn(attribute, value);
                 return Answer.ok(dataToJson(authors));
             case "2":
                 List<Publication> publications = model.getPublicationsOn(attribute, value);

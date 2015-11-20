@@ -9,5 +9,5 @@ public interface Model {
 
     List<Publication> getPublicationsOn(String attribute, String value);
 
-    List<Participant> getParticipantsOn(String attribute, String value);
+    List<Author> getParticipantsOn(String attribute, String value);
 }

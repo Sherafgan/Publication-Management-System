@@ -3,9 +3,19 @@ package Main.Model;
 import lombok.Data;
 
 @Data
-public class Publication {
-    private int pub_id;
-    private String title;
-    private String year;
-    private String url;
+public class Publication implements Tuple {
+    private String pub_id;
+    protected String title;
+    protected String year;
+    protected String url;
+
+    public Publication(String[] parsedLine) {
+        this.pub_id = parsedLine[0];
+        this.title = parsedLine[2];
+        this.year = parsedLine[3];
+        this.url = parsedLine[4];
+    }
+
+    public Publication() {
+    }
 }
