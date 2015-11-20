@@ -9,6 +9,9 @@ public class Publication implements Tuple {
     protected String year;
     protected String url;
 
+    public Publication() {
+    }
+
     public Publication(String[] parsedLine) {
         this.pub_id = parsedLine[0];
         this.title = parsedLine[2];
@@ -16,6 +19,4 @@ public class Publication implements Tuple {
         this.url = parsedLine[4];
     }
 
-    public Publication() {
-    }
 }

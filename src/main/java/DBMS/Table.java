@@ -18,4 +18,6 @@ public class Table {
         this.indexMap = indexMap;
         this.otherMaps = otherMaps;
     }
+
+    public Table(){}
 }

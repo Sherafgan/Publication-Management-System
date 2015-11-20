@@ -3,6 +3,7 @@ package DBMS;
 import Main.Model.*;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Output;
+import com.esotericsoftware.kryo.serializers.JavaSerializer;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.TreeMultimap;
 
@@ -26,16 +27,18 @@ public class FWD {
     private final static int determinatorOfBookTable = 2;
     private final static int determinatorOfPublicationTable = 3;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
         List<Table> tables = new ArrayList<>();
-        int j = 0;
+        int j;
         for (int i = 0; i < namesOfFiles.length; i++) {
-            String csvFile = "/home/sherafgan/Desktop/csv/" + namesOfFiles[i];
-            BufferedReader br = null;
-            String line = "";
+
+            String csvFile = "/Users/nikitaborodulin/Desktop/csv/" + namesOfFiles[i];
+            BufferedReader br;
+            String line;
             String cvsSplitBy = "\\^";
 
             TreeMap<String, Tuple> indexMap = new TreeMap<>();
+
             List<Multimap<String, String>> otherMaps = new ArrayList<>();
 
             Table table;
@@ -121,8 +124,17 @@ public class FWD {
         }
 
         Kryo kryo = new Kryo();
+        JavaSerializer serializer = new JavaSerializer();
+        kryo.register(TreeMultimap.class, serializer);
         Output output = new Output(new FileOutputStream("db.txt"));
         kryo.writeObject(output, tables);
         output.close();
+
+        // Debug
+//        Input input = new Input(new FileInputStream("db.txt"));
+//        List<Table> new_tables = new ArrayList<>();
+//        new_tables = kryo.readObject(input, tables.getClass());
+//        input.close();
     }
+
 }

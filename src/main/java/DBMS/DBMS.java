@@ -3,7 +3,8 @@ package DBMS;
 import Main.Answer;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
-import com.google.common.collect.Multimap;
+import com.esotericsoftware.kryo.serializers.JavaSerializer;
+import com.google.common.collect.TreeMultimap;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -12,16 +13,18 @@ import java.util.List;
 
 public class DBMS {
     private static final DBMS instance = new DBMS();
-    private static Multimap publications;
+    private static List<Table> tables;
 
     // конструктор private, чтобы не было возможности создать экземпляр класса извне.
     private DBMS() {
-        List tables = new ArrayList<>();
 
         Kryo kryo = new Kryo();
+        JavaSerializer serializer = new JavaSerializer();
+        kryo.register(TreeMultimap.class, serializer);
         try {
-            Input input = new Input(new FileInputStream("file.txt"));
-            tables = kryo.readObject(input, tables.getClass());
+            Input input = new Input(new FileInputStream("db.txt"));
+            tables = new ArrayList<>();
+            DBMS.tables = kryo.readObject(input, tables.getClass());
             input.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -29,14 +32,17 @@ public class DBMS {
     }
 
     public static Answer search(String entity, String atr, String search) {
-        //TODO choose the right map, get objects from the table, to create json answer
-        return null;
-    }
+        switch (entity) {
+            case "1":
+                break;
 
+        }
+        return null;
 
 //    public static DBMS getInstance(){
 //        return instance;
 //    }
 
 
+    }
 }

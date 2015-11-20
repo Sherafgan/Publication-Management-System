@@ -7,6 +7,9 @@ public class Book extends Publication implements Tuple {
     String publisher;
     String ISBN;
 
+    public Book() {
+    }
+
     public Book(String[] parsedLine) {
         this.publisher = parsedLine[1];
         this.ISBN = parsedLine[2];

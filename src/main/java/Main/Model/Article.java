@@ -9,6 +9,9 @@ public class Article extends Publication implements Tuple {
     String volume;
     String number;
 
+    public Article() {
+    }
+
     public Article(String[] attributes) {
         this.journal = attributes[0];
         this.month = attributes[1];
