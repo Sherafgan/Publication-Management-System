@@ -1,6 +1,7 @@
 package Main;
 
 import Main.Model.Model;
+import Main.handlers.DB_Handler;
 import Main.handlers.Handler;
 import Main.handlers.additionHandler;
 import Main.sql2omodel.Sql2oModel;
@@ -42,6 +43,8 @@ public class PMSService {
         get("/alive", new Handler(model));
 
         get("/survive", new additionHandler(model));
+
+        get("/load_db", new DB_Handler(model));
 
     }
 }

@@ -32,7 +32,7 @@ public class FWD {
         int j;
         for (int i = 0; i < namesOfFiles.length; i++) {
 
-            String csvFile = "/Users/nikitaborodulin/Desktop/csv/" + namesOfFiles[i];
+            String csvFile = "/home/sherafgan/Desktop/csv/" + namesOfFiles[i];
             BufferedReader br;
             String line;
             String cvsSplitBy = "\\^";

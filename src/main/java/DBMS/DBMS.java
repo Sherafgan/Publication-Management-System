@@ -24,18 +24,6 @@ public class DBMS {
     private static List<Table> tables;
 
     private DBMS() {
-
-        Kryo kryo = new Kryo();
-        JavaSerializer serializer = new JavaSerializer();
-        kryo.register(TreeMultimap.class, serializer);
-        try {
-            Input input = new Input(new FileInputStream("db.txt"));
-            tables = new ArrayList<>();
-            DBMS.tables = kryo.readObject(input, tables.getClass());
-            input.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
     }
 
     public static Answer search(String entity, String atr, String search) {
@@ -79,8 +67,7 @@ public class DBMS {
                         }
                         return Answer.ok(dataToJson(resultPublications));
                     }
-                }
-                else if (atr.equals("Journal") || atr.equals("Month")) {
+                } else if (atr.equals("Journal") || atr.equals("Month")) {
                     List<Article> resultArticles = new ArrayList<>();
                     TreeMap<String, Tuple> articlesIndex = tables.get(0).indexMap;
                     Article articleHeading = new Article("Title", "Year", "URL", "Journal", "Month", "Volume", "Number");
@@ -108,8 +95,7 @@ public class DBMS {
                         }
                     }
                     return Answer.ok(dataToJson(resultArticles));
-                }
-                else if (atr.equals("Publisher") || atr.equals("ISBN")) {
+                } else if (atr.equals("Publisher") || atr.equals("ISBN")) {
                     List<Book> resultBooks = new ArrayList<>();
                     TreeMap<String, Tuple> booksIndex = tables.get(2).indexMap;
                     Book bookHeading = new Book("Title", "Year", "Publisher", "ISBN");
@@ -149,6 +135,20 @@ public class DBMS {
             return sw.toString();
         } catch (IOException e) {
             throw new RuntimeException("IOException from a StringWriter?");
+        }
+    }
+
+    public static void load() {
+        Kryo kryo = new Kryo();
+        JavaSerializer serializer = new JavaSerializer();
+        kryo.register(TreeMultimap.class, serializer);
+        try {
+            Input input = new Input(new FileInputStream("db.txt"));
+            tables = new ArrayList<>();
+            DBMS.tables = kryo.readObject(input, tables.getClass());
+            input.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
     }
 }
