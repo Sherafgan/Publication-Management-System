@@ -51,6 +51,8 @@ public class DBMS {
                 Collection<String> authorsID = authorsNames.get(search);
                 List<Author> resultAuthors = new ArrayList<>();
                 if (!authorsID.isEmpty()) {
+                    Author authorHeading = new Author("Name","Homepage");
+                    resultAuthors.add(authorHeading);
                     Tuple tuple;
                     for (String s : authorsID) {
                         tuple = authorsIndex.get(s);
@@ -63,39 +65,49 @@ public class DBMS {
                 List<Article> resultArticles = new ArrayList<>();
                 Collection<String> publicationsID = new ArrayList<>();
                 TreeMap<String, Tuple> publicationsIndex = tables.get(3).indexMap;
-                if (atr.equals("Title")) {
-                    Multimap<String, String> publicationsTitles = tables.get(3).otherMaps.get(0);
-                    publicationsID = publicationsTitles.get(search);
-                } else if (atr.equals("Year")) {
-                    Multimap<String, String> publicationsYears = tables.get(3).otherMaps.get(1);
-                    publicationsID = publicationsYears.get(search);
-                } else if (atr.equals("Journal")) { //TODO find matched publication
+
+                if (atr.equals("Title") || atr.equals("Year")) {
+                    if (atr.equals("Title")) {
+                        Multimap<String, String> publicationsTitles = tables.get(3).otherMaps.get(0);
+                        publicationsID = publicationsTitles.get(search);
+                    }
+                    if (atr.equals("Year")) {
+                        Multimap<String, String> publicationsYears = tables.get(3).otherMaps.get(1);
+                        publicationsID = publicationsYears.get(search);
+                    }
+                    if (!publicationsID.isEmpty()) {
+                        Publication publicationHeading = new Publication("Title","Year","Homepage");
+                        resultPublications.add(publicationHeading);
+                        Tuple tuple;
+                        for (String s : publicationsID) {
+                            tuple = publicationsIndex.get(s);
+                            resultPublications.add((Publication) tuple);
+                        }
+                        return Answer.ok(dataToJson(resultPublications));
+                    }
+                }
+                if (atr.equals("Journal") || atr.equals("Month")) {
                     TreeMap<String, Tuple> articlesIndex = tables.get(0).indexMap;
                     Multimap<String, String> articlesJournals = tables.get(0).otherMaps.get(0);
+                    Article articleHeading = new Article("Title","Year","URL","Journal","Month","Volume","Number");
+                    resultArticles.add(articleHeading);
                     Collection<String> articlesID = articlesJournals.get(search);
                     for (String ss : articlesID) {
                         Article article = (Article) articlesIndex.get(ss);
-                        Tuple matchedPublication = publicationsIndex.get(ss);
-                        Article joinedArticle = new Article();
-//                        joinedArticle.title = matchedPublication.title;
-//                        joinedArticle.year = matchedPublication.year;
-                        joinedArticle.journal = article.journal;
-                        joinedArticle.month = article.month;
-                        joinedArticle.volume = article.volume;
-                        joinedArticle.number = article.number;
-                        resultArticles.add(joinedArticle);
+                        Publication matchedPublication = (Publication) publicationsIndex.get(ss);
+                        if (matchedPublication != null) {
+                            Article joinedArticle = new Article();
+                            joinedArticle.title = matchedPublication.title;
+                            joinedArticle.year = matchedPublication.year;
+                            joinedArticle.url = matchedPublication.url;
+                            joinedArticle.journal = article.journal;
+                            joinedArticle.month = article.month;
+                            joinedArticle.volume = article.volume;
+                            joinedArticle.number = article.number;
+                            resultArticles.add(joinedArticle);
+                        }
                     }
-                    if (!resultArticles.isEmpty()) {
-                        return Answer.ok(dataToJson(resultArticles));
-                    }
-                }
-                if (!publicationsID.isEmpty()) {
-                    Tuple tuple;
-                    for (String s : publicationsID) {
-                        tuple = publicationsIndex.get(s);
-                        resultPublications.add((Publication) tuple);
-                    }
-                    return Answer.ok(dataToJson(resultPublications));
+                    return Answer.ok(dataToJson(resultArticles));
                 }
                 switch (atr) {
                     case "Journal":

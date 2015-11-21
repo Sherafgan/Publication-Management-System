@@ -10,6 +10,11 @@ public class Book extends Publication implements Tuple {
     public Book() {
     }
 
+    public Book(String publisher, String ISBN) {
+        this.publisher = publisher;
+        this.ISBN = ISBN;
+    }
+
     public Book(String[] parsedLine) {
         this.publisher = parsedLine[1];
         this.ISBN = parsedLine[2];

@@ -110,7 +110,7 @@ public class FWD {
                         Publication publication = new Publication(parsedLine);
                         indexMap.put(parsedLine[1], publication);
 
-                        titleMap.put(parsedLine[2], parsedLine[0]);
+                        titleMap.put(parsedLine[2], parsedLine[1]);
                         yearMap.put(parsedLine[3], parsedLine[0]);
                         j++;
                     }
