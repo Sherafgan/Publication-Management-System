@@ -111,7 +111,7 @@ public class FWD {
                         indexMap.put(parsedLine[1], publication);
 
                         titleMap.put(parsedLine[2], parsedLine[1]);
-                        yearMap.put(parsedLine[3], parsedLine[0]);
+                        yearMap.put(parsedLine[3], parsedLine[1]);
                         j++;
                     }
                     otherMaps.add(titleMap);

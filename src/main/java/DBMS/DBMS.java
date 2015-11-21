@@ -1,10 +1,7 @@
 package DBMS;
 
 import Main.Answer;
-import Main.Model.Article;
-import Main.Model.Author;
-import Main.Model.Publication;
-import Main.Model.Tuple;
+import Main.Model.*;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.serializers.JavaSerializer;
@@ -26,7 +23,6 @@ public class DBMS {
     private static final DBMS instance = new DBMS();
     private static List<Table> tables;
 
-    // конструктор private, чтобы не было возможности создать экземпляр класса извне.
     private DBMS() {
 
         Kryo kryo = new Kryo();
@@ -51,7 +47,7 @@ public class DBMS {
                 Collection<String> authorsID = authorsNames.get(search);
                 List<Author> resultAuthors = new ArrayList<>();
                 if (!authorsID.isEmpty()) {
-                    Author authorHeading = new Author("Name","Homepage");
+                    Author authorHeading = new Author("Name", "Homepage");
                     resultAuthors.add(authorHeading);
                     Tuple tuple;
                     for (String s : authorsID) {
@@ -62,21 +58,19 @@ public class DBMS {
                 return Answer.ok(dataToJson(resultAuthors));
             case "2":
                 List<Publication> resultPublications = new ArrayList<>();
-                List<Article> resultArticles = new ArrayList<>();
                 Collection<String> publicationsID = new ArrayList<>();
                 TreeMap<String, Tuple> publicationsIndex = tables.get(3).indexMap;
-
                 if (atr.equals("Title") || atr.equals("Year")) {
+
                     if (atr.equals("Title")) {
                         Multimap<String, String> publicationsTitles = tables.get(3).otherMaps.get(0);
                         publicationsID = publicationsTitles.get(search);
-                    }
-                    if (atr.equals("Year")) {
+                    } else if (atr.equals("Year")) {
                         Multimap<String, String> publicationsYears = tables.get(3).otherMaps.get(1);
                         publicationsID = publicationsYears.get(search);
                     }
                     if (!publicationsID.isEmpty()) {
-                        Publication publicationHeading = new Publication("Title","Year","Homepage");
+                        Publication publicationHeading = new Publication("Title", "Year", "Homepage");
                         resultPublications.add(publicationHeading);
                         Tuple tuple;
                         for (String s : publicationsID) {
@@ -86,12 +80,18 @@ public class DBMS {
                         return Answer.ok(dataToJson(resultPublications));
                     }
                 }
-                if (atr.equals("Journal") || atr.equals("Month")) {
+                else if (atr.equals("Journal") || atr.equals("Month")) {
+                    List<Article> resultArticles = new ArrayList<>();
                     TreeMap<String, Tuple> articlesIndex = tables.get(0).indexMap;
-                    Multimap<String, String> articlesJournals = tables.get(0).otherMaps.get(0);
-                    Article articleHeading = new Article("Title","Year","URL","Journal","Month","Volume","Number");
+                    Article articleHeading = new Article("Title", "Year", "URL", "Journal", "Month", "Volume", "Number");
                     resultArticles.add(articleHeading);
-                    Collection<String> articlesID = articlesJournals.get(search);
+                    Multimap<String, String> articlesAttribute = null;
+                    if (atr.equals("Journal")) {
+                        articlesAttribute = tables.get(0).otherMaps.get(0);
+                    } else if (atr.equals("Month")) {
+                        articlesAttribute = tables.get(0).otherMaps.get(1);
+                    }
+                    Collection<String> articlesID = articlesAttribute.get(search);
                     for (String ss : articlesID) {
                         Article article = (Article) articlesIndex.get(ss);
                         Publication matchedPublication = (Publication) publicationsIndex.get(ss);
@@ -109,18 +109,34 @@ public class DBMS {
                     }
                     return Answer.ok(dataToJson(resultArticles));
                 }
-                switch (atr) {
-                    case "Journal":
-                        break;
-                    case "Month":
-                        break;
-                    case "Publisher":
-                        break;
-                    case "ISBN":
-                        break;
+                else if (atr.equals("Publisher") || atr.equals("ISBN")) {
+                    List<Book> resultBooks = new ArrayList<>();
+                    TreeMap<String, Tuple> booksIndex = tables.get(2).indexMap;
+                    Book bookHeading = new Book("Title", "Year", "Publisher", "ISBN");
+                    resultBooks.add(bookHeading);
+                    Multimap<String, String> booksAttribute = null;
+                    if (atr.equals("Publisher")) {
+                        booksAttribute = tables.get(2).otherMaps.get(0);
+                    } else if (atr.equals("ISBN")) {
+                        booksAttribute = tables.get(2).otherMaps.get(1);
+                    }
+                    Collection<String> booksID = booksAttribute.get(search);
+                    for (String ss : booksID) { // TODO Books search doesn't work
+                        Book book = (Book) booksIndex.get(ss);
+                        Publication matchedPublication = (Publication) publicationsIndex.get(ss);
+                        if (matchedPublication != null) {
+                            Book joinedBook = new Book();
+                            joinedBook.title = matchedPublication.title;
+                            joinedBook.year = matchedPublication.year;
+                            joinedBook.url = matchedPublication.url;
+                            joinedBook.publisher = book.publisher;
+                            joinedBook.ISBN = book.ISBN;
+                            resultBooks.add(joinedBook);
+                        }
+                    }
+                    return Answer.ok(dataToJson(resultBooks));
                 }
         }
-
         return null;
     }
 
