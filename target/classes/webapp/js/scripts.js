@@ -15,8 +15,25 @@ function login_by_email() {
     var password = document.getElementById("password").value;
     if (validation()) // Calling validation function
     {
+        load_DB();
         redirectToMainPage();
     }
+}
+
+function load_DB() {
+    $.ajax({
+            type: "GET",
+            url: "load_db",
+            dataType: 'json',
+            data: {}
+
+        })
+        .done(function (msg) {
+            $.jsontotable(msg, {id: '#jsontotable', header: false});
+        })
+        .fail(function (xhr, status, errorThrown) {
+            alert("Sorry. Server unavailable. ");
+        });
 }
 
 function validation() {
@@ -41,20 +58,20 @@ function redirectToMainPage() {
     window.location = "mainIndex.html";
 }
 
-$('#btnOK').click(function ()  {
+$('#btnOK').click(function () {
     var entity = document.getElementById("modalEntity");
     var selectedEntity = entity.options[entity.selectedIndex].value;
     if (selectedEntity == 1) {
         var nameInput = document.getElementById("1");
         var name = nameInput.value;
         $.ajax({
-            type: "GET",
-            url: "survive",
-            dataType: 'json',
-            data: {entity: entity.value, name: name}
-        })
+                type: "GET",
+                url: "survive",
+                dataType: 'json',
+                data: {entity: entity.value, name: name}
+            })
             .done(function (msg) {
-                alert( "Data Loaded: " + data );
+                alert("Data Loaded: " + data);
             })
             .fail(function (xhr, status, errorThrown) {
                 alert("Sorry. Data wasn't loaded ");
@@ -80,13 +97,21 @@ $('#btnOK').click(function ()  {
         var isbn = isbnInput.value;
         //alert(isbn);
         $.ajax({
-            type: "GET",
-            url: "survive",
-            dataType: 'json',
-            data: {entity: entity.value, title: title, year: year, journal: journal, month: month, publisher: publisher, isbn: isbn}
-        })
+                type: "GET",
+                url: "survive",
+                dataType: 'json',
+                data: {
+                    entity: entity.value,
+                    title: title,
+                    year: year,
+                    journal: journal,
+                    month: month,
+                    publisher: publisher,
+                    isbn: isbn
+                }
+            })
             .done(function (msg) {
-                alert( "Data Loaded: " + data );
+                alert("Data Loaded: " + data);
             })
             .fail(function (xhr, status, errorThrown) {
                 alert("Sorry. Data wasn't loaded ");
@@ -106,12 +131,12 @@ $("#submitbtn").click(function () {
     if (selectedEntity == 1 || selectedEntity == 2) {
         document.getElementById("jsontotable").innerHTML = "";
         $.ajax({
-            type: "GET",
-            url: "alive",
-            dataType: 'json',
-            data: {entity: selectedEntity, attribute: selectedAttribute, search: searchText}
+                type: "GET",
+                url: "alive",
+                dataType: 'json',
+                data: {entity: selectedEntity, attribute: selectedAttribute, search: searchText}
 
-        })
+            })
             .done(function (msg) {
                 $.jsontotable(msg, {id: '#jsontotable', header: false});
             })
