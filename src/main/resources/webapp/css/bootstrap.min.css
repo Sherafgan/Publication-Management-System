@@ -4609,7 +4609,7 @@ select[multiple].input-group-sm > .form-control, select[multiple].input-group-sm
     margin-top: 3.8%; /*was added*/
     float: left;
     height: 50px;
-    padding: 15px 15px;
+    padding: 15px 7px;
     font-size: 18px;
     line-height: 20px
 }
@@ -4714,7 +4714,7 @@ select[multiple].input-group-sm > .form-control, select[multiple].input-group-sm
 }
 
 .navbar-form {
-    padding: 10px 15px;
+    padding: 10px 5px;
     margin-top: 8px;
     margin-right: -15px;
     margin-bottom: 8px;

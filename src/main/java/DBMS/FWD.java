@@ -35,7 +35,7 @@ public class FWD {
         List<Table> tables = new ArrayList<>();
         for (int i = 0; i < namesOfFiles.length; i++) {
 
-            String csvFile = "/Users/nikitaborodulin/Desktop/csv/" + namesOfFiles[i]; //TODO change directory
+            String csvFile = "/home/sherafgan/Desktop/csv/" + namesOfFiles[i]; //TODO change directory
             BufferedReader br;
             String line;
             String cvsSplitBy = "\\^";
