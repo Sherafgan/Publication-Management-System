@@ -1,15 +1,9 @@
 package Main.handlers;
 
 import DBMS.DBMS;
-import Main.Answer;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import spark.Request;
 import spark.Response;
 import spark.Route;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author Sherafgan Kandov
@@ -21,26 +15,26 @@ public class DB_Handler implements Route {
     public Object handle(Request request, Response response) throws Exception {
         DBMS.load();
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            Map<String, String> m = request.params();
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            Map<String, String> m = request.params();
+//
+//            String entity = request.queryParams("entity");
+//            String atr = request.queryParams("attribute");
+//            String search = request.queryParams("search");
+//            Map<String, String> map = new HashMap<>();
+//            map.put("entity", entity);
+//            map.put("atr", atr);
+//            map.put("search", search);
+//            Map<String, String> urlParams = Collections.unmodifiableMap(map);
 
-            String entity = request.queryParams("entity");
-            String atr = request.queryParams("attribute");
-            String search = request.queryParams("search");
-            Map<String, String> map = new HashMap<>();
-            map.put("entity", entity);
-            map.put("atr", atr);
-            map.put("search", search);
-            Map<String, String> urlParams = Collections.unmodifiableMap(map);
-
-            Answer answer = DBMS.search(entity, atr, search);
+            //Answer answer = DBMS.search(entity, atr, search);
 
 
             //Answer answer = process(urlParams);
-            response.status(answer.getCode());
-            response.type("application/json");
-            response.body(answer.getBody());
-            return answer.getBody();
+            response.status(200);
+            response.type("text/xml");
+            response.body("OK");
+            return response;
         } catch (Exception e) {
             response.status(400);
             response.body(e.getMessage());

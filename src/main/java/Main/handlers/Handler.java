@@ -16,33 +16,6 @@ import java.util.Map;
  */
 public class Handler implements Route {
 
-//    protected Answer processImpl(Map<String, String> urlParams) {
-//        String value, entity, attribute;
-//
-//        try {
-//            entity = urlParams.get("entity");
-//            attribute = urlParams.get("atr");
-//            value = urlParams.get("search");
-//        } catch (IllegalArgumentException e) {
-//            return new Answer(404);
-//        }
-//        switch (entity) {
-//            case "1":
-//                List<Author> authors = model.getParticipantsOn(attribute, value);
-//                return Answer.ok(dataToJson(authors));
-//            case "2":
-//                List<Publication> publications = model.getPublicationsOn(attribute, value);
-//                return Answer.ok(dataToJson(publications));
-//            default:
-//                return new Answer(404);
-//        }
-//    }
-
-//    public final Answer process(Map<String, String> urlParams) {
-//        return processImpl(urlParams);
-//    }
-
-
     public Object handle(Request request, Response response) throws Exception {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
