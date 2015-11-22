@@ -15,9 +15,7 @@ public class DeleteRecordHandler implements Route {
     public Object handle(Request request, Response response) throws Exception {
         String deletionEntity = request.queryParams("deletionEntity");
         String tupleIdToDelete = request.queryParams("tupleID");
-        //TODO: implement deletion of record
-        Boolean deleted = DBMS.delete(deletionEntity,tupleIdToDelete);
-        if (deleted) {
+        if (DBMS.delete(deletionEntity,tupleIdToDelete,true)) {
             response.type("text");
             response.status(200);
             response.body("OK");

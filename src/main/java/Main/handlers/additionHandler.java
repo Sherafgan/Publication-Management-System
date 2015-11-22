@@ -19,7 +19,6 @@ public class additionHandler implements Route {
     public Object handle(Request request, Response response) throws Exception {
         try {
             Map<String, String> map = new HashMap<>();
-            Map<String, String> m = request.params();
             String entity = request.queryParams("entity");
             map.put("entity", entity);
             if (entity.equals("1")) {
@@ -45,7 +44,7 @@ public class additionHandler implements Route {
                     map.put("publisher", publisher);
                     map.put("isbn", isbn);
                 }
-            DBMS.insert(map);
+            DBMS.insert(map,true);
             response.type("text");
             response.status(200);
             response.body("OK");

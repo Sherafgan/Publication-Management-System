@@ -1,8 +1,6 @@
 // Empty JS for your own code to be here
 
 function login_by_email() {
-    var email = document.getElementById("email").value;
-    var password = document.getElementById("password").value;
     if (validation()) // Calling validation function
     {
         load_DB();
@@ -63,7 +61,7 @@ $('#btnOK').click(function () {
                 data: {entity: entity.value, name: name, homepageURL: homepageURL}
             })
             .done(function (msg) {
-                alert("Data Loaded: " + data);
+                alert("Record added!");
             })
             .fail(function (xhr, status, errorThrown) {
                 alert("Sorry. Data wasn't loaded ");
@@ -72,26 +70,20 @@ $('#btnOK').click(function () {
     else if (selectedEntity == 2) {
         var titleInput = document.getElementById("3");
         var title = titleInput.value;
-        //alert(title);
         var yearInput = document.getElementById("4");
         var year = yearInput.value;
-        //alert(year);
         var journalInput = document.getElementById("5");
         var journal = journalInput.value;
-        //alert(journal);
         var monthInput = document.getElementById("6");
         var month = monthInput.value;
-        //alert(month);
         var publisherInput = document.getElementById("7");
         var publisher = publisherInput.value;
-        //alert(publisher);
         var isbnInput = document.getElementById("8");
         var isbn = isbnInput.value;
-        //alert(isbn);
         $.ajax({
                 type: "GET",
                 url: "survive",
-                dataType: 'json',
+                dataType: 'text',
                 data: {
                     entity: entity.value,
                     title: title,
@@ -103,7 +95,7 @@ $('#btnOK').click(function () {
                 }
             })
             .done(function (msg) {
-                alert("Data Loaded: " + data);
+                alert("Record added!");
             })
             .fail(function (xhr, status, errorThrown) {
                 alert("Sorry. Data wasn't loaded ");
@@ -141,7 +133,7 @@ $('#updateOK').click(function () {
         $.ajax({
                 type: "GET",
                 url: "updateRecord",
-                dataType: 'json',
+                dataType: 'text',
                 data: {
                     updateIDEntry: updateIDEntry.value,
                     updateEntity: updateEntity.value,
@@ -168,7 +160,7 @@ $('#updateOK').click(function () {
             $.ajax({
                     type: "GET",
                     url: "updateRecord",
-                    dataType: 'json',
+                    dataType: 'text',
                     data: {
                         updateIDEntry: updateIDEntry.value,
                         updateEntity: updateEntity.value,
@@ -243,14 +235,6 @@ $("#submitbtn").click(function () {
         event.preventDefault();
     }
 });
-
-function showResponse1(resp) {
-    alert("RESPONSE");
-}
-
-function showResponse2(resp) {
-    alert("RESPONSE2");
-}
 
 function makeTable(container, data) {
     var table = $("<table/>").addClass('CSSTableGenerator');
