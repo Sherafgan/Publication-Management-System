@@ -45,7 +45,7 @@ function validation() {
 }
 
 function redirectToMainPage() {
-    window.location = "mainIndex.html";
+    window.location = "pages/index.html";
 }
 
 $('#btnOK').click(function () {
