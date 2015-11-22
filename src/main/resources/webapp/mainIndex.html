@@ -68,7 +68,9 @@
                     <div class="controlPanel">
                         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Add
                         </button>
-                        <button type="button" class="btn btn-danger">Delete</button>
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
+                            Delete
+                        </button>
                     </div>
                 </div>
 
@@ -106,6 +108,29 @@
                     </div>
                     <div class="modal-footer">
                         <button id="btnOK" type="button" class="btn btn-default">Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!— Delete Modal —>
+        <div class="modal fade" id="deleteModal" role="dialog">
+            <div class="modal-dialog">
+                <!— Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Delete</h4>
+                    </div>
+                    <div class="modal-body">
+                        <!— HERE TO ADD MAIN FORM-->
+                        <p>Delete tuple by id.</p>
+                        <br/>
+                        <input id="idEntry" type="text" placeholder="ID"><br/>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="deleteOK" type="button" class="btn btn-default">Delete
                         </button>
                     </div>
                 </div>

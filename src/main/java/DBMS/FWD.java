@@ -29,10 +29,9 @@ public class FWD {
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         List<Table> tables = new ArrayList<>();
-        int j;
         for (int i = 0; i < namesOfFiles.length; i++) {
 
-            String csvFile = "/Users/nikitaborodulin/Desktop/csv/" + namesOfFiles[i];
+            String csvFile = "/home/sherafgan/Desktop/csv/" + namesOfFiles[i];
             BufferedReader br;
             String line;
             String cvsSplitBy = "\\^";
@@ -45,7 +44,6 @@ public class FWD {
 
             br = new BufferedReader(new FileReader(csvFile));
             br.readLine();
-            j = 0;
             switch (i) {
                 case determinatorOfArticleTable:
                     Multimap<String, String> journalMap = TreeMultimap.create();
@@ -59,7 +57,6 @@ public class FWD {
                         if (!parsedLine[3].equals("null")) {
                             monthMap.put(parsedLine[3], parsedLine[0]);
                         }
-                        j++;
                     }
 
                     otherMaps.add(journalMap);
@@ -77,7 +74,6 @@ public class FWD {
                         indexMap.put(parsedLine[0], author);
 
                         nameMap.put(parsedLine[1], parsedLine[0]);
-                        j++;
                     }
                     otherMaps.add(nameMap);
 
@@ -95,7 +91,6 @@ public class FWD {
 
                         publisherMap.put(parsedLine[2], parsedLine[0]);
                         isbnMap.put(parsedLine[3], parsedLine[0]);
-                        j++;
                     }
                     otherMaps.add(publisherMap);
                     otherMaps.add(isbnMap);
@@ -114,7 +109,6 @@ public class FWD {
 
                         titleMap.put(parsedLine[2], parsedLine[0]);
                         yearMap.put(parsedLine[3], parsedLine[0]);
-                        j++;
                     }
                     otherMaps.add(titleMap);
                     otherMaps.add(yearMap);
