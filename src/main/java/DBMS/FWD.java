@@ -35,7 +35,7 @@ public class FWD {
         List<Table> tables = new ArrayList<>();
         for (int i = 0; i < namesOfFiles.length; i++) {
 
-            String csvFile = "/Users/nikitaborodulin/Desktop/csv/" + namesOfFiles[i];
+            String csvFile = "/Users/nikitaborodulin/Desktop/csv/" + namesOfFiles[i]; //TODO change directory
             BufferedReader br;
             String line;
             String cvsSplitBy = "\\^";
@@ -148,12 +148,6 @@ public class FWD {
         Output output = new Output(new FileOutputStream("db.txt"));
         kryo.writeObject(output, tables);
         output.close();
-
-        // Debug
-//        Input input = new Input(new FileInputStream("db.txt"));
-//        List<Table> new_tables = new ArrayList<>();
-//        new_tables = kryo.readObject(input, tables.getClass());
-//        input.close();
     }
 
 }

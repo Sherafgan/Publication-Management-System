@@ -141,7 +141,7 @@ public class DBMS {
                         booksAttribute = tables.get(2).otherMaps.get(1);
                     }
                     Collection<String> booksID = booksAttribute.get(search);
-                    for (String ss : booksID) { // TODO Books search doesn't work
+                    for (String ss : booksID) {
                         Book book = (Book) booksIndex.get(ss);
                         Publication matchedPublication = (Publication) publicationsIndex.get(ss);
                         if (matchedPublication != null) {
@@ -183,8 +183,6 @@ public class DBMS {
     }
 
     public static void load() {
-//        Kryo kryo = new Kryo();
-//        JavaSerializer serializer = new JavaSerializer();
         kryo.register(TreeMultimap.class, serializer);
         try {
             input = new Input(new FileInputStream("db.txt"));
