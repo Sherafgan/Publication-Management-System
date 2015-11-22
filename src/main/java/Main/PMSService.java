@@ -1,9 +1,6 @@
 package Main;
 
-import Main.handlers.DB_Handler;
-import Main.handlers.DeleteTupleHandler;
-import Main.handlers.Handler;
-import Main.handlers.additionHandler;
+import Main.handlers.*;
 import com.beust.jcommander.JCommander;
 import spark.Spark;
 
@@ -38,6 +35,8 @@ public class PMSService {
 
         get("/load_db", new DB_Handler());
 
-        get("/deleteTuple", new DeleteTupleHandler());
+        get("/deleteRecord", new DeleteRecordHandler());
+
+        get("/updateRecord", new UpdateRecordHandler());
     }
 }

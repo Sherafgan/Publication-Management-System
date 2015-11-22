@@ -71,6 +71,9 @@
                         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
                             Delete
                         </button>
+                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#updateModal">
+                            Update
+                        </button>
                     </div>
                 </div>
 
@@ -126,9 +129,13 @@
                     </div>
                     <div class="modal-body">
                         <!— HERE TO ADD MAIN FORM-->
-                        <p>Delete tuple by id.</p>
+                        <p>Delete record by id.</p>
+                        <select id="deletionEntity">
+                            <option value="1">Author</option>
+                            <option value="2">Publication</option>
+                        </select>
                         <br/>
-                        <input id="idEntry" type="text" placeholder="ID"><br/>
+                        <input id="idEntry" type="text" placeholder="Record ID to delete"><br/>
                     </div>
                     <div class="modal-footer">
                         <button id="deleteOK" type="button" class="btn btn-default">Delete
@@ -137,6 +144,45 @@
                 </div>
             </div>
         </div>
+
+        <!— Update Modal —>
+        <div class="modal fade" id="updateModal" role="dialog">
+            <div class="modal-dialog">
+                <!— Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Update</h4>
+                    </div>
+                    <div class="modal-body">
+                        <!— HERE TO ADD MAIN FORM-->
+                        <p>Update record by id.</p>
+                        <select id="updateEntity" onchange="configureDropDownListsForUpdateForm(this)">
+                            <option value="1">Author</option>
+                            <option value="2">Publication</option>
+                        </select>
+                        <select id="publicationDeterminer" style="opacity:0;" onchange="articleOrBookFields(this)">
+                            <option value="1">Article</option>
+                            <option value="2">Book</option>
+                        </select>
+                        <br/>
+                        <input id="upd1" type="text" placeholder="Name"><br/>
+                        <input id="upd2" type="text" placeholder="Homepage URL"><br/>
+                        <input id="upd3" type="hidden" placeholder=""><br/>
+                        <input id="upd4" type="hidden" placeholder=""><br/>
+                        <input id="upd5" type="hidden" placeholder=""><br/>
+                        <input id="upd6" type="hidden" placeholder=""><br/>
+                        <input id="upd7" type="hidden" placeholder=""><br/>
+                        <input id="upd8" type="hidden" placeholder=""><br/>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="updateOK" type="button" class="btn btn-default">Update
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div id="jsontotable" class="jsontotable"></div>
     </div>
 </div>

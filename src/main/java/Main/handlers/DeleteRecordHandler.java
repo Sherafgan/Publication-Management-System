@@ -9,11 +9,12 @@ import spark.Route;
  * @author Sherafgan Kandov
  *         20.11.15
  */
-public class DeleteTupleHandler implements Route {
+public class DeleteRecordHandler implements Route {
     @Override
     public Object handle(Request request, Response response) throws Exception {
+        String deletionEntity = request.queryParams("deletionEntity");
         String tupleIdToDelete = request.queryParams("tupleID");
-        //TODO implement deletion of tuple
+        //TODO: implement deletion of record
         return null;
     }
 }
