@@ -1,5 +1,6 @@
 package Main.handlers;
 
+import DBMS.DBMS;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -15,6 +16,18 @@ public class DeleteRecordHandler implements Route {
         String deletionEntity = request.queryParams("deletionEntity");
         String tupleIdToDelete = request.queryParams("tupleID");
         //TODO: implement deletion of record
-        return null;
+        Boolean deleted = DBMS.delete(deletionEntity,tupleIdToDelete);
+        if (deleted) {
+            response.type("text");
+            response.status(200);
+            response.body("OK");
+            return response;
+        }
+        else {
+            response.type("text");
+            response.status(404);
+            response.body("Not found");
+            return response;
+        }
     }
 }

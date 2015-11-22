@@ -34,11 +34,32 @@ public class DBMS {
     }
 
 
+    public static boolean delete(String entity, String id) {
+        if (entity.equals("1")) {
+            TreeMap<String, Tuple> authorsIndex = tables.get(1).indexMap;
+            Multimap<String, String> authorsNames = tables.get(1).otherMaps.get(0);
+            Author deletedTuple = (Author)authorsIndex.remove(id);
+            if (deletedTuple != null) {
+                Collection authorsToSearch = authorsNames.get(deletedTuple.name);
+                for (Object object : authorsToSearch) {
+                    String idToCheck = object.toString();
+                    if (idToCheck.equals(deletedTuple.id)) {
+                        authorsNames.remove(deletedTuple.name,idToCheck);
+                    }
+                }
+                tables.get(1).setIndexMap(authorsIndex);
+                tables.get(1).otherMaps.set(0, authorsNames);
+                save();
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static void insert(Map<String, String> map) {
         if (map.get("entity").equals("1")) {
             String name = map.get("name");
             String homepage = map.get("homepage");
-            Author author = new Author(name, homepage);
 
             TreeMap<String, Tuple> authorsIndex = tables.get(1).indexMap;
             Multimap<String, String> maxIdsMap = tables.get(4).otherMaps.get(0);
@@ -50,16 +71,19 @@ public class DBMS {
             maxIdsMap.remove("authorMaxID",String.valueOf(maxAuthorID));
             maxAuthorID++;
             maxIdsMap.put("authorMaxID",String.valueOf(maxAuthorID));
-
+            Author author = new Author(String.valueOf(maxAuthorID),name, homepage);
             authorsIndex.put(String.valueOf(maxAuthorID), author);
             authorsNames.put(name, String.valueOf(maxAuthorID));
 
-            tables.get(0).setIndexMap(authorsIndex);
-            tables.get(0).otherMaps.set(0, authorsNames);
+            tables.get(1).setIndexMap(authorsIndex);
+            tables.get(1).otherMaps.set(0, authorsNames);
             List<Multimap<String, String>> newMaxIdsAuthor = new ArrayList<>();
             newMaxIdsAuthor.add(maxIdsMap);
             tables.get(4).setOtherMaps(newMaxIdsAuthor);
             save();
+        }
+        else {
+
         }
     }
 
@@ -72,7 +96,7 @@ public class DBMS {
                 Collection<String> authorsID = authorsNames.get(search);
                 List<Author> resultAuthors = new ArrayList<>();
                 if (!authorsID.isEmpty()) {
-                    Author authorHeading = new Author("Name", "Homepage");
+                    Author authorHeading = new Author("ID","Name", "Homepage");
                     resultAuthors.add(authorHeading);
                     Tuple tuple;
                     for (String s : authorsID) {
@@ -95,7 +119,7 @@ public class DBMS {
                         publicationsID = publicationsYears.get(search);
                     }
                     if (!publicationsID.isEmpty()) {
-                        Publication publicationHeading = new Publication("Title", "Year", "Homepage");
+                        Publication publicationHeading = new Publication("ID","Title", "Year", "Homepage");
                         resultPublications.add(publicationHeading);
                         Tuple tuple;
                         for (String s : publicationsID) {
@@ -107,7 +131,7 @@ public class DBMS {
                 } else if (atr.equals("Journal") || atr.equals("Month")) {
                     List<Article> resultArticles = new ArrayList<>();
                     TreeMap<String, Tuple> articlesIndex = tables.get(0).indexMap;
-                    Article articleHeading = new Article("Title", "Year", "URL", "Journal", "Month", "Volume", "Number");
+                    Article articleHeading = new Article("ID","Title", "Year", "URL", "Journal", "Month", "Volume", "Number");
                     resultArticles.add(articleHeading);
                     Multimap<String, String> articlesAttribute = null;
                     if (atr.equals("Journal")) {
@@ -121,6 +145,7 @@ public class DBMS {
                         Publication matchedPublication = (Publication) publicationsIndex.get(ss);
                         if (matchedPublication != null) {
                             Article joinedArticle = new Article();
+                            joinedArticle.id = matchedPublication.id;
                             joinedArticle.title = matchedPublication.title;
                             joinedArticle.year = matchedPublication.year;
                             joinedArticle.url = matchedPublication.url;
@@ -135,7 +160,7 @@ public class DBMS {
                 } else if (atr.equals("Publisher") || atr.equals("ISBN")) {
                     List<Book> resultBooks = new ArrayList<>();
                     TreeMap<String, Tuple> booksIndex = tables.get(2).indexMap;
-                    Book bookHeading = new Book("Title", "Year", "URL", "Publisher", "ISBN");
+                    Book bookHeading = new Book("ID","Title", "Year", "URL", "Publisher", "ISBN");
                     resultBooks.add(bookHeading);
                     Multimap<String, String> booksAttribute = null;
                     if (atr.equals("Publisher")) {
@@ -149,6 +174,7 @@ public class DBMS {
                         Publication matchedPublication = (Publication) publicationsIndex.get(ss);
                         if (matchedPublication != null) {
                             Book joinedBook = new Book();
+                            joinedBook.id = matchedPublication.id;
                             joinedBook.title = matchedPublication.title;
                             joinedBook.year = matchedPublication.year;
                             joinedBook.url = matchedPublication.url;

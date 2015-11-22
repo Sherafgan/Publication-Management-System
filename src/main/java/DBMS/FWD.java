@@ -145,7 +145,7 @@ public class FWD {
         Kryo kryo = new Kryo();
         JavaSerializer serializer = new JavaSerializer();
         kryo.register(TreeMultimap.class, serializer);
-        Output output = new Output(new FileOutputStream("db.txt"));
+        Output output = new Output(new FileOutputStream("db.dat"));
         kryo.writeObject(output, tables);
         output.close();
     }

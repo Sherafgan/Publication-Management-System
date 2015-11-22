@@ -6,6 +6,7 @@ package Main.Model;
  *         20.11.15
  */
 public class Article extends Publication implements Tuple {
+    public String id;
     public String journal;
     public String month;
     public String volume;
@@ -14,7 +15,8 @@ public class Article extends Publication implements Tuple {
     public Article() {
     }
 
-    public Article(String title, String year, String url, String journal, String month, String volume, String number) {
+    public Article(String id, String title, String year, String url, String journal, String month, String volume, String number) {
+        this.id = id;
         this.title = title;
         this.year = year;
         this.url = url;
@@ -25,6 +27,7 @@ public class Article extends Publication implements Tuple {
     }
 
     public Article(String[] attributes) {
+        this.id = attributes[0];
         this.journal = attributes[2];
         this.month = attributes[3];
         this.volume = attributes[4];

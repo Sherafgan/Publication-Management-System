@@ -117,7 +117,7 @@ $('#deleteOK').click(function () {
     $.ajax({
             type: "GET",
             url: "deleteRecord",
-            dataType: 'json',
+            dataType: 'text',
             data: {tupleID: tupleID.value, deletionEntity: deletionEntity.value}
         })
         .done(function (msg) {
