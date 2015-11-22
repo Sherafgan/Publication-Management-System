@@ -98,7 +98,7 @@ public class DBMS {
                 } else if (atr.equals("Publisher") || atr.equals("ISBN")) {
                     List<Book> resultBooks = new ArrayList<>();
                     TreeMap<String, Tuple> booksIndex = tables.get(2).indexMap;
-                    Book bookHeading = new Book("Title", "Year", "Publisher", "ISBN");
+                    Book bookHeading = new Book("Title", "Year", "URL", "Publisher", "ISBN");
                     resultBooks.add(bookHeading);
                     Multimap<String, String> booksAttribute = null;
                     if (atr.equals("Publisher")) {

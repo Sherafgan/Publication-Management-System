@@ -55,9 +55,9 @@ public class FWD {
                         Article article = new Article(parsedLine);
                         indexMap.put(parsedLine[0], article);
 
-                        journalMap.put(parsedLine[1], parsedLine[0]);
-                        if (!parsedLine[0].equals("null")) {
-                            monthMap.put(parsedLine[2], parsedLine[0]);
+                        journalMap.put(parsedLine[2], parsedLine[0]);
+                        if (!parsedLine[3].equals("null")) {
+                            monthMap.put(parsedLine[3], parsedLine[0]);
                         }
                         j++;
                     }
@@ -93,8 +93,8 @@ public class FWD {
                         Book book = new Book(parsedLine);
                         indexMap.put(parsedLine[0], book);
 
-                        publisherMap.put(parsedLine[1], parsedLine[0]);
-                        isbnMap.put(parsedLine[2], parsedLine[0]);
+                        publisherMap.put(parsedLine[2], parsedLine[0]);
+                        isbnMap.put(parsedLine[3], parsedLine[0]);
                         j++;
                     }
                     otherMaps.add(publisherMap);
@@ -110,10 +110,10 @@ public class FWD {
                     while ((line = br.readLine()) != null) {
                         String[] parsedLine = line.split(cvsSplitBy);
                         Publication publication = new Publication(parsedLine);
-                        indexMap.put(parsedLine[1], publication);
+                        indexMap.put(parsedLine[0], publication);
 
-                        titleMap.put(parsedLine[2], parsedLine[1]);
-                        yearMap.put(parsedLine[3], parsedLine[1]);
+                        titleMap.put(parsedLine[2], parsedLine[0]);
+                        yearMap.put(parsedLine[3], parsedLine[0]);
                         j++;
                     }
                     otherMaps.add(titleMap);
