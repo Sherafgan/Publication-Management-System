@@ -2,7 +2,6 @@ package Main.handlers;
 
 import DBMS.DBMS;
 import Main.Answer;
-import Main.Model.Model;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import spark.Request;
 import spark.Response;
@@ -16,13 +15,6 @@ import java.util.Map;
  * Created by nikitaborodulin on 30/10/15.
  */
 public class Handler implements Route {
-
-    protected Model model;
-
-
-    public Handler(Model model) {
-        this.model = model;
-    }
 
 //    protected Answer processImpl(Map<String, String> urlParams) {
 //        String value, entity, attribute;

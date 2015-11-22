@@ -1,6 +1,5 @@
 package Main.handlers;
 
-import Main.Model.Model;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -14,13 +13,6 @@ import java.util.Map;
  * Created by nikitaborodulin on 30/10/15.
  */
 public class additionHandler implements Route {
-
-    protected Model model;
-
-
-    public additionHandler(Model model) {
-        this.model = model;
-    }
 
     protected void processImpl(Map<String, String> urlParams) {
         String entity;
@@ -36,7 +28,7 @@ public class additionHandler implements Route {
             values.add(urlParams.get("publisher"));
             values.add(urlParams.get("isbn"));
         }
-        model.addition(entity, values);
+
     }
 
     public final void process(Map<String, String> urlParams) {

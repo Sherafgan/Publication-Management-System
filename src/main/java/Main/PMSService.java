@@ -1,10 +1,8 @@
 package Main;
 
-import Main.Model.Model;
 import Main.handlers.DB_Handler;
 import Main.handlers.Handler;
 import Main.handlers.additionHandler;
-import Main.sql2omodel.Sql2oModel;
 import com.beust.jcommander.JCommander;
 import org.sql2o.Sql2o;
 import org.sql2o.quirks.PostgresQuirks;
@@ -38,13 +36,11 @@ public class PMSService {
                 options.dbUsername, options.dbPassword, new PostgresQuirks() {
         });
 
-        Model model = new Sql2oModel(sql2o);
+        get("/alive", new Handler());
 
-        get("/alive", new Handler(model));
+        get("/survive", new additionHandler());
 
-        get("/survive", new additionHandler(model));
-
-        get("/load_db", new DB_Handler(model));
+        get("/load_db", new DB_Handler());
 
     }
 }

@@ -2,7 +2,6 @@ package Main.handlers;
 
 import DBMS.DBMS;
 import Main.Answer;
-import Main.Model.Model;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import spark.Request;
 import spark.Response;
@@ -17,11 +16,6 @@ import java.util.Map;
  *         21.11.15
  */
 public class DB_Handler implements Route {
-    protected Model model;
-
-    public DB_Handler(Model model) {
-        this.model = model;
-    }
 
     @Override
     public Object handle(Request request, Response response) throws Exception {

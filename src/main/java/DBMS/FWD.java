@@ -32,7 +32,7 @@ public class FWD {
         int j;
         for (int i = 0; i < namesOfFiles.length; i++) {
 
-            String csvFile = "/home/sherafgan/Desktop/csv/" + namesOfFiles[i];
+            String csvFile = "/Users/nikitaborodulin/Desktop/csv/" + namesOfFiles[i];
             BufferedReader br;
             String line;
             String cvsSplitBy = "\\^";
@@ -50,13 +50,15 @@ public class FWD {
                 case determinatorOfArticleTable:
                     Multimap<String, String> journalMap = TreeMultimap.create();
                     Multimap<String, String> monthMap = TreeMultimap.create();
-                    while ((line = br.readLine()) != null && j < 100000) {
+                    while ((line = br.readLine()) != null) {
                         String[] parsedLine = line.split(cvsSplitBy);
                         Article article = new Article(parsedLine);
-                        indexMap.put(parsedLine[4], article);
+                        indexMap.put(parsedLine[0], article);
 
-                        journalMap.put(parsedLine[0], parsedLine[4]);
-                        monthMap.put(parsedLine[1], parsedLine[4]);
+                        journalMap.put(parsedLine[1], parsedLine[0]);
+                        if (!parsedLine[0].equals("null")) {
+                            monthMap.put(parsedLine[2], parsedLine[0]);
+                        }
                         j++;
                     }
 
@@ -69,7 +71,7 @@ public class FWD {
                 case determinatorOfAuthorTable:
                     Multimap<String, String> nameMap = TreeMultimap.create();
 
-                    while ((line = br.readLine()) != null && j < 1000) {
+                    while ((line = br.readLine()) != null) {
                         String[] parsedLine = line.split(cvsSplitBy);
                         Author author = new Author(parsedLine);
                         indexMap.put(parsedLine[0], author);
@@ -86,7 +88,7 @@ public class FWD {
                     Multimap<String, String> publisherMap = TreeMultimap.create();
                     Multimap<String, String> isbnMap = TreeMultimap.create();
 
-                    while ((line = br.readLine()) != null && j < 1000) {
+                    while ((line = br.readLine()) != null) {
                         String[] parsedLine = line.split(cvsSplitBy);
                         Book book = new Book(parsedLine);
                         indexMap.put(parsedLine[0], book);
@@ -105,7 +107,7 @@ public class FWD {
                     Multimap<String, String> titleMap = TreeMultimap.create();
                     Multimap<String, String> yearMap = TreeMultimap.create();
 
-                    while ((line = br.readLine()) != null && j < 100000) {
+                    while ((line = br.readLine()) != null) {
                         String[] parsedLine = line.split(cvsSplitBy);
                         Publication publication = new Publication(parsedLine);
                         indexMap.put(parsedLine[1], publication);
