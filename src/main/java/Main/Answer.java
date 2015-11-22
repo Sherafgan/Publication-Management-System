@@ -1,5 +1,10 @@
 package Main;
 
+/**
+ * @author Nikita Borodulin
+ * @author Sherafgan Kandov
+ *         20.11.15
+ */
 public class Answer {
 
     public Answer(int code) {

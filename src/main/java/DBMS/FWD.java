@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.TreeMap;
 
 /**
+ * @author Nikita Borodulin
  * @author Sherafgan Kandov
  *         20.11.15
  */
@@ -27,11 +28,14 @@ public class FWD {
     private final static int determinatorOfBookTable = 2;
     private final static int determinatorOfPublicationTable = 3;
 
+    private static long authorMaxId = 0;
+    private static long publicationMaxId = 0;
+
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         List<Table> tables = new ArrayList<>();
         for (int i = 0; i < namesOfFiles.length; i++) {
 
-            String csvFile = "/home/sherafgan/Desktop/csv/" + namesOfFiles[i];
+            String csvFile = "/Users/nikitaborodulin/Desktop/csv/" + namesOfFiles[i];
             BufferedReader br;
             String line;
             String cvsSplitBy = "\\^";
@@ -71,6 +75,10 @@ public class FWD {
                     while ((line = br.readLine()) != null) {
                         String[] parsedLine = line.split(cvsSplitBy);
                         Author author = new Author(parsedLine);
+                        long id = Long.parseLong(parsedLine[0]);
+                        if (id > authorMaxId) {
+                            authorMaxId = id;
+                        }
                         indexMap.put(parsedLine[0], author);
 
                         nameMap.put(parsedLine[1], parsedLine[0]);
@@ -105,6 +113,10 @@ public class FWD {
                     while ((line = br.readLine()) != null) {
                         String[] parsedLine = line.split(cvsSplitBy);
                         Publication publication = new Publication(parsedLine);
+                        long id = Long.parseLong(parsedLine[0]);
+                        if (id > publicationMaxId) {
+                            publicationMaxId = id;
+                        }
                         indexMap.put(parsedLine[0], publication);
 
                         titleMap.put(parsedLine[2], parsedLine[0]);
@@ -118,6 +130,17 @@ public class FWD {
                     break;
             }
         }
+
+        TreeMap<String, Tuple> empMap = new TreeMap<>();
+        Multimap<String, String> idsMap = TreeMultimap.create();
+        idsMap.put("authorMaxID", String.valueOf(authorMaxId));
+        idsMap.put("publicationMaxID", String.valueOf(publicationMaxId));
+
+        List<Multimap<String, String>> temp = new ArrayList<>();
+        temp.add(idsMap);
+
+        Table maxIDS = new Table(empMap, temp);
+        tables.add(maxIDS);
 
         Kryo kryo = new Kryo();
         JavaSerializer serializer = new JavaSerializer();

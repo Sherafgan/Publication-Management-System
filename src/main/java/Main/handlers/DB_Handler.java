@@ -6,8 +6,9 @@ import spark.Response;
 import spark.Route;
 
 /**
+ * @author Nikita Borodulin
  * @author Sherafgan Kandov
- *         21.11.15
+ *         20.11.15
  */
 public class DB_Handler implements Route {
 

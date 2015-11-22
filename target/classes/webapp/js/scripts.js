@@ -1,15 +1,5 @@
 // Empty JS for your own code to be here
 
-function search() {
-    var entity = document.getElementById("entity");
-    var selectedEntity = entity.options[entity.selectedIndex].value;
-    var attribute = document.getElementById("attribute");
-    var selectedAttribute = attribute.options[attribute.selectedIndex].value;
-    var insertedText = document.getElementById("in");
-    var div = document.getElementById("images");
-    var input = document.getElementById("in");
-}
-
 function login_by_email() {
     var email = document.getElementById("email").value;
     var password = document.getElementById("password").value;
@@ -69,7 +59,7 @@ $('#btnOK').click(function () {
         $.ajax({
                 type: "GET",
                 url: "survive",
-                dataType: 'json',
+                dataType: 'text',
                 data: {entity: entity.value, name: name, homepageURL: homepageURL}
             })
             .done(function (msg) {

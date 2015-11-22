@@ -4,26 +4,60 @@ import Main.Answer;
 import Main.Model.*;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
+import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryo.serializers.JavaSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.TreeMultimap;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.TreeMap;
+import java.io.*;
+import java.util.*;
 
+/**
+ * @author Nikita Borodulin
+ * @author Sherafgan Kandov
+ *         20.11.15
+ */
 public class DBMS {
     private static final DBMS instance = new DBMS();
+    public static long authorMaxId = 0;
+    public static long publicationMaxId = 0;
+    public static Kryo kryo = new Kryo();
+    public static JavaSerializer serializer = new JavaSerializer();
+    public static Output output;
+    public static Input input;
     private static List<Table> tables;
 
     private DBMS() {
+    }
+
+
+    public static void insert(Map<String, String> map) {
+        if (map.get("entity").equals("1")) {
+            String name = map.get("name");
+            String homepage = map.get("homepage");
+            Author author = new Author(name, homepage);
+
+            TreeMap<String, Tuple> authorsIndex = tables.get(1).indexMap;
+            Multimap<String, String> maxIdsMap = tables.get(4).otherMaps.get(0);
+            Multimap<String, String> authorsNames = tables.get(1).otherMaps.get(0);
+
+            Collection maxAuthorIDraw = maxIdsMap.get("authorMaxID");
+            String maxAuthorIDString = String.valueOf(Iterables.get(maxAuthorIDraw, 0));
+            Long maxAuthorID = Long.parseLong(maxAuthorIDString);
+            maxAuthorID++;
+
+
+            authorsIndex.put(String.valueOf(maxAuthorID), author);
+            authorsNames.put(name, String.valueOf(maxAuthorID));
+
+            tables.get(0).setIndexMap(authorsIndex);
+            tables.get(0).otherMaps.set(0, authorsNames);
+
+            save();
+        }
     }
 
     public static Answer search(String entity, String atr, String search) {
@@ -126,6 +160,16 @@ public class DBMS {
         return null;
     }
 
+    public static void save() {
+        try {
+            output = new Output(new FileOutputStream("db.txt"));
+            kryo.writeObject(output, tables);
+            output.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static String dataToJson(Object data) {
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -139,13 +183,13 @@ public class DBMS {
     }
 
     public static void load() {
-        Kryo kryo = new Kryo();
-        JavaSerializer serializer = new JavaSerializer();
+//        Kryo kryo = new Kryo();
+//        JavaSerializer serializer = new JavaSerializer();
         kryo.register(TreeMultimap.class, serializer);
         try {
-            Input input = new Input(new FileInputStream("db.txt"));
+            input = new Input(new FileInputStream("db.txt"));
             tables = new ArrayList<>();
-            DBMS.tables = kryo.readObject(input, tables.getClass());
+            tables = kryo.readObject(input, tables.getClass());
             input.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();

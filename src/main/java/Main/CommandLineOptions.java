@@ -2,6 +2,11 @@ package Main;
 
 import com.beust.jcommander.Parameter;
 
+/**
+ * @author Nikita Borodulin
+ * @author Sherafgan Kandov
+ *         20.11.15
+ */
 class CommandLineOptions {
 
     @Parameter(names = "--debug")

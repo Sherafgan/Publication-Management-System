@@ -1,7 +1,9 @@
 package Main.Model;
 
 /**
- * Created by nikitaborodulin on 31/10/15.
+ * @author Nikita Borodulin
+ * @author Sherafgan Kandov
+ *         20.11.15
  */
 public class Article extends Publication implements Tuple {
     public String journal;
