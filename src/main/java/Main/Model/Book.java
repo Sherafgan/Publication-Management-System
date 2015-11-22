@@ -6,7 +6,7 @@ package Main.Model;
  *         20.11.15
  */
 public class Book extends Publication implements Tuple {
-    public String id;
+    //public String id;
     public String publisher;
     public String ISBN;
 
@@ -23,7 +23,7 @@ public class Book extends Publication implements Tuple {
     }
 
     public Book(String[] parsedLine) {
-        this.id = parsedLine[0];
+        //this.id = parsedLine[0];
         this.publisher = parsedLine[2];
         this.ISBN = parsedLine[3];
     }

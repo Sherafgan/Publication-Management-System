@@ -53,6 +53,29 @@ public class DBMS {
                 return true;
             }
         }
+        else {
+            TreeMap<String, Tuple> articlesIndex = tables.get(0).indexMap;
+            TreeMap<String, Tuple> booksIndex = tables.get(2).indexMap;
+            TreeMap<String, Tuple> publicationIndex = tables.get(3).indexMap;
+            Multimap<String, String> publicationTitle = tables.get(3).otherMaps.get(0);
+            Multimap<String, String> publicationYear = tables.get(3).otherMaps.get(1);
+            Tuple deletedTuple = publicationIndex.remove(id);
+            if (deletedTuple != null) {
+                
+            }
+            if (articlesIndex.get(id) != null) {
+                Multimap<String, String> articlesJournal = tables.get(0).otherMaps.get(0);
+                Multimap<String, String> articlesMonth = tables.get(0).otherMaps.get(1);
+                publicationIndex.remove(id);
+
+
+            }
+            else if (booksIndex.get(id) != null) {
+                Multimap<String, String> bookPublisher = tables.get(2).otherMaps.get(0);
+                Multimap<String, String> bookISBN = tables.get(2).otherMaps.get(1);
+            }
+
+        }
         return false;
     }
 
@@ -83,7 +106,67 @@ public class DBMS {
             save();
         }
         else {
-
+            String title = map.get("title");
+            String year = map.get("year");
+            TreeMap<String, Tuple> publicationIndex = tables.get(3).indexMap;
+            Multimap<String, String> titleIndex = tables.get(3).otherMaps.get(0);
+            Multimap<String, String> yearIndex = tables.get(3).otherMaps.get(1);
+            if (map.containsKey("journal")) {
+                String journal = map.get("journal");
+                String month = map.get("month");
+                TreeMap<String, Tuple> articlesIndex = tables.get(0).indexMap;
+                Multimap<String, String> articlesJournal = tables.get(0).otherMaps.get(0);
+                Multimap<String, String> articlesMonth = tables.get(0).otherMaps.get(1);
+                Multimap<String, String> maxIdsMap = tables.get(4).otherMaps.get(0);
+                Collection maxPublicationIDraw = maxIdsMap.get("publicationMaxID");
+                String maxAuthorIDString = String.valueOf(Iterables.get(maxPublicationIDraw, 0));
+                Long maxPublicationID = Long.parseLong(maxAuthorIDString);
+                maxIdsMap.remove("publicationMaxID",String.valueOf(maxPublicationID));
+                maxPublicationID++;
+                maxIdsMap.put("publicationMaxID",String.valueOf(maxPublicationID));
+                Article newArticle = new Article(String.valueOf(maxPublicationID),title,year,"null",journal,month,"null","null"); //TODO fix volume, number, url
+                articlesIndex.put(String.valueOf(maxPublicationID),newArticle);
+                articlesJournal.put(journal,String.valueOf(maxPublicationID));
+                articlesMonth.put(month,String.valueOf(maxPublicationID));
+                publicationIndex.put(String.valueOf(maxPublicationID),newArticle);
+                titleIndex.put(title,String.valueOf(maxPublicationID));
+                yearIndex.put(year,String.valueOf(maxPublicationID));
+                tables.get(0).setIndexMap(articlesIndex);
+                tables.get(0).otherMaps.set(0,articlesJournal);
+                tables.get(0).otherMaps.set(1,articlesMonth);
+                tables.get(3).setIndexMap(publicationIndex);
+                tables.get(3).otherMaps.set(0,titleIndex);
+                tables.get(3).otherMaps.set(1,yearIndex);
+                save();
+            }
+            else {
+                String publisher = map.get("publisher");
+                String isbn = map.get("isbn");
+                TreeMap<String, Tuple> booksIndex = tables.get(2).indexMap;
+                Multimap<String, String> bookPublisher = tables.get(2).otherMaps.get(0);
+                Multimap<String, String> bookISBN = tables.get(2).otherMaps.get(1);
+                Multimap<String, String> maxIdsMap = tables.get(4).otherMaps.get(0);
+                Collection maxPublicationIDraw = maxIdsMap.get("publicationMaxID");
+                String maxAuthorIDString = String.valueOf(Iterables.get(maxPublicationIDraw, 0));
+                Long maxPublicationID = Long.parseLong(maxAuthorIDString);
+                maxIdsMap.remove("publicationMaxID",String.valueOf(maxPublicationID));
+                maxPublicationID++;
+                maxIdsMap.put("publicationMaxID",String.valueOf(maxPublicationID));
+                Book newBook = new Book(String.valueOf(maxPublicationID),title,year,"null",publisher,isbn); //TODO fix volume, number, url
+                booksIndex.put(String.valueOf(maxPublicationID),newBook);
+                bookPublisher.put(publisher,String.valueOf(maxPublicationID));
+                bookISBN.put(isbn,String.valueOf(maxPublicationID));
+                publicationIndex.put(String.valueOf(maxPublicationID),newBook);
+                titleIndex.put(title,String.valueOf(maxPublicationID));
+                yearIndex.put(year,String.valueOf(maxPublicationID));
+                tables.get(2).setIndexMap(booksIndex);
+                tables.get(2).otherMaps.set(0,bookPublisher);
+                tables.get(2).otherMaps.set(1,bookISBN);
+                tables.get(3).setIndexMap(publicationIndex);
+                tables.get(3).otherMaps.set(0,titleIndex);
+                tables.get(3).otherMaps.set(1,yearIndex);
+                save();
+            }
         }
     }
 
@@ -119,7 +202,7 @@ public class DBMS {
                         publicationsID = publicationsYears.get(search);
                     }
                     if (!publicationsID.isEmpty()) {
-                        Publication publicationHeading = new Publication("ID","Title", "Year", "Homepage");
+                        Publication publicationHeading = new Publication("ID","Title", "Year", "Homepage");//TODO fix table layout for article/book displaying
                         resultPublications.add(publicationHeading);
                         Tuple tuple;
                         for (String s : publicationsID) {
@@ -191,7 +274,7 @@ public class DBMS {
 
     public static void save() {
         try {
-            output = new Output(new FileOutputStream("db.txt"));
+            output = new Output(new FileOutputStream("db.dat"));
             kryo.writeObject(output, tables);
             output.close();
         } catch (FileNotFoundException e) {
@@ -214,7 +297,7 @@ public class DBMS {
     public static void load() {
         kryo.register(TreeMultimap.class, serializer);
         try {
-            input = new Input(new FileInputStream("db.txt"));
+            input = new Input(new FileInputStream("db.dat"));
             tables = new ArrayList<>();
             tables = kryo.readObject(input, tables.getClass());
             input.close();
