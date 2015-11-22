@@ -45,8 +45,6 @@ public class additionHandler implements Route {
                     map.put("publisher", publisher);
                     map.put("isbn", isbn);
                 }
-           //Map<String, String> urlParams = Collections.unmodifiableMap(map);
-            //process(urlParams);
             DBMS.insert(map);
             response.type("text");
             response.status(200);

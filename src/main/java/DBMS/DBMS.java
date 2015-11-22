@@ -47,15 +47,18 @@ public class DBMS {
             Collection maxAuthorIDraw = maxIdsMap.get("authorMaxID");
             String maxAuthorIDString = String.valueOf(Iterables.get(maxAuthorIDraw, 0));
             Long maxAuthorID = Long.parseLong(maxAuthorIDString);
+            maxIdsMap.remove("authorMaxID",String.valueOf(maxAuthorID));
             maxAuthorID++;
-
+            maxIdsMap.put("authorMaxID",String.valueOf(maxAuthorID));
 
             authorsIndex.put(String.valueOf(maxAuthorID), author);
             authorsNames.put(name, String.valueOf(maxAuthorID));
 
             tables.get(0).setIndexMap(authorsIndex);
             tables.get(0).otherMaps.set(0, authorsNames);
-
+            List<Multimap<String, String>> newMaxIdsAuthor = new ArrayList<>();
+            newMaxIdsAuthor.add(maxIdsMap);
+            tables.get(4).setOtherMaps(newMaxIdsAuthor);
             save();
         }
     }
