@@ -12,6 +12,7 @@ import spark.Route;
 public class UpdateRecordHandler implements Route {
     @Override
     public Object handle(Request request, Response response) throws Exception {
+        String updateIDEntry = request.queryParams("updateIDEntry");
         String updateEntity = request.queryParams("updateEntity");
         if (updateEntity.equals("1")) {
             String nameValue = request.queryParams("nameValue");
@@ -26,9 +27,9 @@ public class UpdateRecordHandler implements Route {
             if (publicationDeterminer.equals("1")) {
                 String journalValue = request.queryParams("journalValue");
                 String monthValue = request.queryParams("monthValue");
-                String publisherValue = request.queryParams("publisherValue");
                 //TODO: implement update of record in 'Article'-s
             } else {
+                String publisherValue = request.queryParams("publisherValue");
                 String isbnValue = request.queryParams("isbnValue");
                 //TODO: implement update of record in 'Book'-s
             }

@@ -130,6 +130,8 @@ $('#deleteOK').click(function () {
 });
 
 $('#updateOK').click(function () {
+    var updateIDEntry = document.getElementById("updateIDEntry");
+
     var updateEntity = document.getElementById("updateEntity");
 
     if (updateEntity.value == 1) {
@@ -141,6 +143,7 @@ $('#updateOK').click(function () {
                 url: "updateRecord",
                 dataType: 'json',
                 data: {
+                    updateIDEntry: updateIDEntry.value,
                     updateEntity: updateEntity.value,
                     nameValue: nameValue.value,
                     homepageURLValue: homepageURLValue.value
@@ -161,20 +164,19 @@ $('#updateOK').click(function () {
         if (publicationDeterminer.value == 1) {
             var journalValue = document.getElementById("upd5");
             var monthValue = document.getElementById("upd6");
-            var publisherValue = document.getElementById("upd7");
 
             $.ajax({
                     type: "GET",
                     url: "updateRecord",
                     dataType: 'json',
                     data: {
+                        updateIDEntry: updateIDEntry.value,
                         updateEntity: updateEntity.value,
                         publicationDeterminer: publicationDeterminer.value,
                         titleValue: titleValue.value,
                         yearValue: yearValue.value,
                         journalValue: journalValue.value,
-                        monthValue: monthValue.value,
-                        publisherValue: publisherValue.value
+                        monthValue: monthValue.value
                     }
                 })
                 .done(function (msg) {
@@ -184,6 +186,7 @@ $('#updateOK').click(function () {
                     alert("Sorry. Record wasn't found!");
                 });
         } else {
+            var publisherValue = document.getElementById("upd7");
             var isbnValue = document.getElementById("upd8");
 
             $.ajax({
@@ -191,10 +194,12 @@ $('#updateOK').click(function () {
                     url: "updateRecord",
                     dataType: 'json',
                     data: {
+                        updateIDEntry: updateIDEntry.value,
                         updateEntity: updateEntity.value,
                         publicationDeterminer: publicationDeterminer.value,
                         titleValue: titleValue.value,
                         yearValue: yearValue.value,
+                        publisherValue: publisherValue.value,
                         isbnValue: isbnValue.value
                     }
                 })
@@ -316,13 +321,11 @@ function configureDropDownListsForUpdateForm(ddl1) {
     var authorsAttributes = ['upd1', 'upd2'];
     var publicationAttributes = ['upd3', 'upd4', 'upd5', 'upd6', 'upd7', 'upd8'];
 
-    var articleAttributes = ['upd3', 'upd4', 'upd5', 'upd6', 'upd7'];
-    var bookPlaceAttributes = ['upd3', 'upd4', 'upd8'];
+    var articleAttributes = ['upd3', 'upd4', 'upd5', 'upd6'];
 
     var authorPlaceHolders = ['Name', 'HomepageURL'];
-    //var publicationPlaceHolders = ['Title', 'Year', 'Journal', 'Month', 'Publisher', 'ISBN'];
 
-    var articlePlaceHolders = ['Title', 'Year', 'Journal', 'Month', 'Publisher'];
+    var articlePlaceHolders = ['Title', 'Year', 'Journal', 'Month'];
 
     switch (ddl1.value) {
         case '1':
@@ -356,11 +359,11 @@ function makeAllFieldsHidden() {
 }
 
 function articleOrBookFields(ddl) {
-    var articleAttributes = ['upd3', 'upd4', 'upd5', 'upd6', 'upd7'];
-    var bookPlaceAttributes = ['upd3', 'upd4', 'upd8'];
+    var articleAttributes = ['upd3', 'upd4', 'upd5', 'upd6'];
+    var bookPlaceAttributes = ['upd3', 'upd4', 'upd7', 'upd8'];
 
-    var articlePlaceHolders = ['Title', 'Year', 'Journal', 'Month', 'Publisher'];
-    var bookPlaceHolders = ['Title', 'Year', 'ISBN'];
+    var articlePlaceHolders = ['Title', 'Year', 'Journal', 'Month'];
+    var bookPlaceHolders = ['Title', 'Year', 'Publisher', 'ISBN'];
     switch (ddl.value) {
         case '1':
             for (i = 0; i < bookPlaceAttributes.length; i++) {
