@@ -64,11 +64,13 @@ $('#btnOK').click(function () {
     if (selectedEntity == 1) {
         var nameInput = document.getElementById("1");
         var name = nameInput.value;
+        var homepageURLInput = document.getElementById("2");
+        var homepageURL = homepageURLInput.value;
         $.ajax({
                 type: "GET",
                 url: "survive",
                 dataType: 'json',
-                data: {entity: entity.value, name: name}
+                data: {entity: entity.value, name: name, homepageURL: homepageURL}
             })
             .done(function (msg) {
                 alert("Data Loaded: " + data);
@@ -78,22 +80,22 @@ $('#btnOK').click(function () {
             });
     }
     else if (selectedEntity == 2) {
-        var titleInput = document.getElementById("2");
+        var titleInput = document.getElementById("3");
         var title = titleInput.value;
         //alert(title);
-        var yearInput = document.getElementById("3");
+        var yearInput = document.getElementById("4");
         var year = yearInput.value;
         //alert(year);
-        var journalInput = document.getElementById("4");
+        var journalInput = document.getElementById("5");
         var journal = journalInput.value;
         //alert(journal);
-        var monthInput = document.getElementById("5");
+        var monthInput = document.getElementById("6");
         var month = monthInput.value;
         //alert(month);
-        var publisherInput = document.getElementById("6");
+        var publisherInput = document.getElementById("7");
         var publisher = publisherInput.value;
         //alert(publisher);
-        var isbnInput = document.getElementById("7");
+        var isbnInput = document.getElementById("8");
         var isbn = isbnInput.value;
         //alert(isbn);
         $.ajax({
@@ -117,6 +119,23 @@ $('#btnOK').click(function () {
                 alert("Sorry. Data wasn't loaded ");
             });
     }
+});
+
+$('#deleteOK').click(function () {
+    var tupleID = document.getElementById("idEntry");
+    $.ajax({
+            type: "GET",
+            url: "deleteTuple",
+            dataType: 'json',
+            data: {tupleID: tupleID.value}
+        })
+        .done(function (msg) {
+            alert("Data Loaded: " + data);
+        })
+        .fail(function (xhr, status, errorThrown) {
+            alert("Sorry. Data wasn't loaded ");
+        });
+
 });
 
 
@@ -182,10 +201,10 @@ function appendTableColumn(table, rowData) {
 //selection dropdown's scripts
 
 function configureDropDownListsForAddForm(ddl1) {
-    var authorsAttributes = ['1'];
-    var publicationAttributes = ['2', '3', '4', '5', '6', '7'];
+    var authorsAttributes = ['1', '2'];
+    var publicationAttributes = ['3', '4', '5', '6', '7', '8'];
 
-    var authorPlaceHolders = ['Name'];
+    var authorPlaceHolders = ['Name', 'HomepageURL'];
     var publicationPlaceHolders = ['Title', 'Year', 'Journal', 'Month', 'Publisher', 'ISBN'];
 
     switch (ddl1.value) {
@@ -224,7 +243,7 @@ function makeInputFieldHidden(text) {
 }
 
 function configureDropDownLists(ddl1, ddl2) {
-    var authorsAttributes = ['Name'];
+    var authorsAttributes = ['Name', 'HomepageURL'];
     var publicationAttributes = ['Title', 'Year', 'Journal', 'Month', 'Publisher', 'ISBN'];
 
     switch (ddl1.value) {
