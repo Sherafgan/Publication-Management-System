@@ -1,8 +1,6 @@
 // Empty JS for your own code to be here
 
 function login_by_email() {
-    var email = document.getElementById("email").value;
-    var password = document.getElementById("password").value;
     if (validation()) // Calling validation function
     {
         load_DB();
@@ -91,7 +89,7 @@ $('#btnOK').click(function () {
         $.ajax({
                 type: "GET",
                 url: "survive",
-                dataType: 'json',
+                dataType: 'text',
                 data: {
                     entity: entity.value,
                     title: title,
@@ -243,14 +241,6 @@ $("#submitbtn").click(function () {
         event.preventDefault();
     }
 });
-
-function showResponse1(resp) {
-    alert("RESPONSE");
-}
-
-function showResponse2(resp) {
-    alert("RESPONSE2");
-}
 
 function makeTable(container, data) {
     var table = $("<table/>").addClass('CSSTableGenerator');

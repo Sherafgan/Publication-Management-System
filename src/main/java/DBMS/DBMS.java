@@ -40,7 +40,7 @@ public class DBMS {
             Multimap<String, String> authorsNames = tables.get(1).otherMaps.get(0);
             Author deletedTuple = (Author)authorsIndex.remove(id);
             if (deletedTuple != null) {
-                Collection authorsToSearch = authorsNames.get(deletedTuple.name);
+                Collection authorsToSearch = authorsNames.get(deletedTuple.name); //TODO Is it necessary to use for loop? See publication deletion
                 for (Object object : authorsToSearch) {
                     String idToCheck = object.toString();
                     if (idToCheck.equals(deletedTuple.id)) {
@@ -61,20 +61,36 @@ public class DBMS {
             Multimap<String, String> publicationYear = tables.get(3).otherMaps.get(1);
             Tuple deletedTuple = publicationIndex.remove(id);
             if (deletedTuple != null) {
-                
+                if (articlesIndex.get(id) != null) { //TODO check deletion
+                    Article tempArticle = (Article) deletedTuple;
+                    Multimap<String, String> articlesJournal = tables.get(0).otherMaps.get(0);
+                    Multimap<String, String> articlesMonth = tables.get(0).otherMaps.get(1);
+                    publicationTitle.remove(tempArticle.title,id);
+                    publicationYear.remove(tempArticle.year,id);
+                    articlesJournal.remove(tempArticle.journal,id);
+                    articlesMonth.remove(tempArticle.month,id);
+                    tables.get(3).setIndexMap(publicationIndex);
+                    tables.get(3).otherMaps.set(0, publicationTitle);
+                    tables.get(3).otherMaps.set(1, publicationYear);
+                    tables.get(0).otherMaps.set(0, articlesJournal);
+                    tables.get(0).otherMaps.set(1, articlesMonth);
+                } else if (booksIndex.get(id) != null) {
+                    Book tempBook = (Book) deletedTuple;
+                    Multimap<String, String> bookPublisher = tables.get(2).otherMaps.get(0);
+                    Multimap<String, String> bookISBN = tables.get(2).otherMaps.get(1);
+                    publicationTitle.remove(tempBook.title,id);
+                    publicationYear.remove(tempBook.year,id);
+                    bookPublisher.remove(tempBook.publisher,id);
+                    bookISBN.remove(tempBook.ISBN,id);
+                    tables.get(3).setIndexMap(publicationIndex);
+                    tables.get(3).otherMaps.set(0, publicationTitle);
+                    tables.get(3).otherMaps.set(1, publicationYear);
+                    tables.get(2).otherMaps.set(0, bookPublisher);
+                    tables.get(2).otherMaps.set(1, bookISBN);
+                }
+                save();
+                return true;
             }
-            if (articlesIndex.get(id) != null) {
-                Multimap<String, String> articlesJournal = tables.get(0).otherMaps.get(0);
-                Multimap<String, String> articlesMonth = tables.get(0).otherMaps.get(1);
-                publicationIndex.remove(id);
-
-
-            }
-            else if (booksIndex.get(id) != null) {
-                Multimap<String, String> bookPublisher = tables.get(2).otherMaps.get(0);
-                Multimap<String, String> bookISBN = tables.get(2).otherMaps.get(1);
-            }
-
         }
         return false;
     }
@@ -170,7 +186,7 @@ public class DBMS {
         }
     }
 
-    public static Answer search(String entity, String atr, String search) {
+    public static Answer search(String entity, String atr, String search) { //TODO check every attribute
 
         switch (entity) {
             case "1":
@@ -178,9 +194,9 @@ public class DBMS {
                 Multimap<String, String> authorsNames = tables.get(1).otherMaps.get(0);
                 Collection<String> authorsID = authorsNames.get(search);
                 List<Author> resultAuthors = new ArrayList<>();
+                Author authorHeading = new Author("ID","Name", "Homepage");
+                resultAuthors.add(authorHeading);
                 if (!authorsID.isEmpty()) {
-                    Author authorHeading = new Author("ID","Name", "Homepage");
-                    resultAuthors.add(authorHeading);
                     Tuple tuple;
                     for (String s : authorsID) {
                         tuple = authorsIndex.get(s);
@@ -193,7 +209,8 @@ public class DBMS {
                 Collection<String> publicationsID = new ArrayList<>();
                 TreeMap<String, Tuple> publicationsIndex = tables.get(3).indexMap;
                 if (atr.equals("Title") || atr.equals("Year")) {
-
+                    Publication publicationHeading = new Publication("ID","Title", "Year", "Homepage");//TODO fix table layout for article/book displaying
+                    resultPublications.add(publicationHeading);
                     if (atr.equals("Title")) {
                         Multimap<String, String> publicationsTitles = tables.get(3).otherMaps.get(0);
                         publicationsID = publicationsTitles.get(search);
@@ -202,15 +219,13 @@ public class DBMS {
                         publicationsID = publicationsYears.get(search);
                     }
                     if (!publicationsID.isEmpty()) {
-                        Publication publicationHeading = new Publication("ID","Title", "Year", "Homepage");//TODO fix table layout for article/book displaying
-                        resultPublications.add(publicationHeading);
                         Tuple tuple;
                         for (String s : publicationsID) {
                             tuple = publicationsIndex.get(s);
                             resultPublications.add((Publication) tuple);
                         }
-                        return Answer.ok(dataToJson(resultPublications));
                     }
+                    return Answer.ok(dataToJson(resultPublications));
                 } else if (atr.equals("Journal") || atr.equals("Month")) {
                     List<Article> resultArticles = new ArrayList<>();
                     TreeMap<String, Tuple> articlesIndex = tables.get(0).indexMap;
