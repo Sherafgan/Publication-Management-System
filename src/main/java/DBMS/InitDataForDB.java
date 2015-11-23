@@ -20,7 +20,7 @@ import java.util.TreeMap;
  * @author Sherafgan Kandov
  *         20.11.15
  */
-public class FWD {
+public class InitDataForDB {
     private static final String[] namesOfFiles = new String[]{"article.csv", "author.csv", "book.csv", "publication.csv"};
 
     private final static int determinatorOfArticleTable = 0;
@@ -35,7 +35,7 @@ public class FWD {
         List<Table> tables = new ArrayList<>();
         for (int i = 0; i < namesOfFiles.length; i++) {
 
-            String csvFile = "/home/sherafgan/Desktop/csv/" + namesOfFiles[i]; //TODO change directory
+            String csvFile = "dataToFillDB/" + namesOfFiles[i];
             BufferedReader br;
             String line;
             String cvsSplitBy = "\\^";

@@ -39,12 +39,11 @@ public class additionHandler implements Route {
                 if (!journal.isEmpty() && !month.isEmpty() && publisher.isEmpty() && isbn.isEmpty()) {
                     map.put("journal", journal);
                     map.put("month", month);
-                }
-                else if(journal.isEmpty() && month.isEmpty() && !publisher.isEmpty() && !isbn.isEmpty())
+                } else if (journal.isEmpty() && month.isEmpty() && !publisher.isEmpty() && !isbn.isEmpty())
                     map.put("publisher", publisher);
-                    map.put("isbn", isbn);
-                }
-            DBMS.insert(map,true);
+                map.put("isbn", isbn);
+            }
+            DBMS.insert(map, true);
             response.type("text");
             response.status(200);
             response.body("OK");

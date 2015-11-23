@@ -20,7 +20,8 @@ public class Table {
         this.otherMaps = otherMaps;
     }
 
-    public Table(){}
+    public Table() {
+    }
 
     public void setIndexMap(TreeMap<String, Tuple> indexMap) {
         this.indexMap = indexMap;

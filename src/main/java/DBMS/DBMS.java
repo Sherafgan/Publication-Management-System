@@ -35,7 +35,7 @@ public class DBMS {
 
     public static boolean update(Map<String, String> params) {
         if (DBMS.delete(params.get("entity"), params.get("id"), false)) {
-            DBMS.insert(params,true);
+            DBMS.insert(params, true);
             return true;
         }
         return false;
@@ -127,8 +127,7 @@ public class DBMS {
                 List<Multimap<String, String>> newMaxIdsAuthor = new ArrayList<>();
                 newMaxIdsAuthor.add(maxIdsMap);
                 tables.get(4).setOtherMaps(newMaxIdsAuthor);
-            }
-            else {
+            } else {
                 String id = params.get("id");
                 Author author = new Author(id, name, homepage);
                 authorsIndex.put(id, author);
@@ -170,8 +169,7 @@ public class DBMS {
                     List<Multimap<String, String>> newMaxIdsPubl = new ArrayList<>();
                     newMaxIdsPubl.add(maxIdsMap);
                     tables.get(4).setOtherMaps(newMaxIdsPubl);
-                }
-                else {
+                } else {
                     String id = params.get("id");
                     Article newArticle = new Article(id, title, year, "null", journal, month, "null", "null"); //TODO fix volume, number, url
                     articlesIndex.put(id, newArticle);
@@ -214,8 +212,7 @@ public class DBMS {
                     List<Multimap<String, String>> newMaxIdsPubl = new ArrayList<>();
                     newMaxIdsPubl.add(maxIdsMap);
                     tables.get(4).setOtherMaps(newMaxIdsPubl);
-                }
-                else {
+                } else {
                     String id = params.get("id");
                     Book newBook = new Book(id, title, year, "null", publisher, isbn); //TODO fix volume, number, url
                     booksIndex.put(id, newBook);

@@ -1,7 +1,6 @@
 package Main;
 
 import Main.handlers.*;
-import com.beust.jcommander.JCommander;
 import spark.Spark;
 
 import java.util.logging.Logger;
@@ -19,15 +18,6 @@ public class PMSService {
 
     public static void main(String[] args) {
         Spark.staticFileLocation("webapp");
-        CommandLineOptions options = new CommandLineOptions();
-        new JCommander(options, args);
-
-        logger.finest("Options.debug = " + options.debug);
-        logger.finest("Options.database = " + options.database);
-        logger.finest("Options.dbHost = " + options.dbHost);
-        logger.finest("Options.dbUsername = " + options.dbUsername);
-        logger.finest("Options.dbPort = " + options.dbPort);
-        logger.finest("Options.servicePort = " + options.servicePort);
 
         get("/alive", new Handler());
 

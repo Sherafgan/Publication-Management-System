@@ -26,7 +26,6 @@ public class Article extends Publication implements Tuple {
     }
 
     public Article(String[] attributes) {
-        //this.id = attributes[0];
         this.journal = attributes[2];
         this.month = attributes[3];
         this.volume = attributes[4];

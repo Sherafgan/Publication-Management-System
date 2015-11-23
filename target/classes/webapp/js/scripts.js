@@ -19,7 +19,7 @@ function load_DB() {
         .done(function (msg) {
             $.jsontotable(msg, {id: '#jsontotable', header: false});
         })
-        .fail(function (xhr, status, errorThrown) {
+        .fail(function () {
             alert("Sorry. Server unavailable. ");
         });
 }
@@ -60,10 +60,10 @@ $('#btnOK').click(function () {
                 dataType: 'text',
                 data: {entity: entity.value, name: name, homepageURL: homepageURL}
             })
-            .done(function (msg) {
+            .done(function () {
                 alert("Record added!");
             })
-            .fail(function (xhr, status, errorThrown) {
+            .fail(function () {
                 alert("Sorry. Data wasn't loaded ");
             });
     }
@@ -94,10 +94,10 @@ $('#btnOK').click(function () {
                     isbn: isbn
                 }
             })
-            .done(function (msg) {
+            .done(function () {
                 alert("Record added!");
             })
-            .fail(function (xhr, status, errorThrown) {
+            .fail(function () {
                 alert("Sorry. Data wasn't loaded ");
             });
     }
@@ -112,10 +112,10 @@ $('#deleteOK').click(function () {
             dataType: 'text',
             data: {tupleID: tupleID.value, deletionEntity: deletionEntity.value}
         })
-        .done(function (msg) {
+        .done(function () {
             alert("Record deleted!");
         })
-        .fail(function (xhr, status, errorThrown) {
+        .fail(function () {
             alert("Sorry. Record wasn't found!");
         });
 
@@ -141,10 +141,10 @@ $('#updateOK').click(function () {
                     homepageURLValue: homepageURLValue.value
                 }
             })
-            .done(function (msg) {
+            .done(function () {
                 alert("Record updated!");
             })
-            .fail(function (xhr, status, errorThrown) {
+            .fail(function () {
                 alert("Sorry. Record wasn't found in 'Author'-s!");
             });
     } else {
@@ -171,10 +171,10 @@ $('#updateOK').click(function () {
                         monthValue: monthValue.value
                     }
                 })
-                .done(function (msg) {
+                .done(function () {
                     alert("Record updated!");
                 })
-                .fail(function (xhr, status, errorThrown) {
+                .fail(function () {
                     alert("Sorry. Record wasn't found!");
                 });
         } else {
@@ -195,10 +195,10 @@ $('#updateOK').click(function () {
                         isbnValue: isbnValue.value
                     }
                 })
-                .done(function (msg) {
+                .done(function () {
                     alert("Record updated!");
                 })
-                .fail(function (xhr, status, errorThrown) {
+                .fail(function () {
                     alert("Sorry. Record wasn't found!");
                 });
         }
@@ -226,7 +226,7 @@ $("#submitbtn").click(function () {
             .done(function (msg) {
                 $.jsontotable(msg, {id: '#jsontotable', header: false});
             })
-            .fail(function (xhr, status, errorThrown) {
+            .fail(function () {
                 alert("Sorry. Server unavailable. ");
             });
     }
@@ -236,26 +236,26 @@ $("#submitbtn").click(function () {
     }
 });
 
-function makeTable(container, data) {
-    var table = $("<table/>").addClass('CSSTableGenerator');
-    $.each(data, function (rowIndex, r) {
-        var row = $("<tr/>");
-        $.each(r, function (colIndex, c) {
-            row.append($("<t" + (rowIndex == 0 ? "h" : "d") + "/>").text(c));
-        });
-        table.append(row);
-    });
-    return container.append(table);
-}
-
-function appendTableColumn(table, rowData) {
-    var lastRow = $('<tr/>').appendTo(table.find('tbody:last'));
-    $.each(rowData, function (colIndex, c) {
-        lastRow.append($('<td/>').text(c));
-    });
-
-    return lastRow;
-}
+//function makeTable(container, data) {
+//    var table = $("<table/>").addClass('CSSTableGenerator');
+//    $.each(data, function (rowIndex, r) {
+//        var row = $("<tr/>");
+//        $.each(r, function (colIndex, c) {
+//            row.append($("<t" + (rowIndex == 0 ? "h" : "d") + "/>").text(c));
+//        });
+//        table.append(row);
+//    });
+//    return container.append(table);
+//}
+//
+//function appendTableColumn(table, rowData) {
+//    var lastRow = $('<tr/>').appendTo(table.find('tbody:last'));
+//    $.each(rowData, function (colIndex, c) {
+//        lastRow.append($('<td/>').text(c));
+//    });
+//
+//    return lastRow;
+//}
 
 //selection dropdown's scripts
 
@@ -337,11 +337,6 @@ function configureDropDownListsForUpdateForm(ddl1) {
 
 }
 
-function makeAllFieldsHidden() {
-    var allFieldAttributes = ['upd1', 'upd2', 'upd3', 'upd4', 'upd5', 'upd6', 'upd7', 'upd8'];
-    makeInputFieldHidden(allFieldAttributes[i]);
-}
-
 function articleOrBookFields(ddl) {
     var articleAttributes = ['upd3', 'upd4', 'upd5', 'upd6'];
     var bookPlaceAttributes = ['upd3', 'upd4', 'upd7', 'upd8'];
@@ -372,7 +367,7 @@ function articleOrBookFields(ddl) {
 }
 
 function configureDropDownLists(ddl1, ddl2) {
-    var authorsAttributes = ['Name', 'HomepageURL'];
+    var authorsAttributes = ['Name'];
     var publicationAttributes = ['Title', 'Year', 'Journal', 'Month', 'Publisher', 'ISBN'];
 
     switch (ddl1.value) {
